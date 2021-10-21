@@ -10,7 +10,7 @@ export JAVA_HOME="$HOME/local/lib/jdk-9.0.4"
 export DERBY_HOME="$HOME/local/lib/jdk-9.0.4/db"
 export ANT_HOME="$HOME/local/source/ant"
 export MAVEN_HOME="$HOME/local/source/apache-maven-3.8.1"
-export VIMINIT="source $HOME/local/config/vim/vimrc"
+export VIMINIT="source $HOME/.vimrc"
 
 # Expand path variable
 export PATH=$HOME/bin:/usr/local/bin:$PATH
