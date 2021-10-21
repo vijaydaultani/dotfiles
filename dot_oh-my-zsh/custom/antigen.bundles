@@ -1,0 +1,20 @@
+# First of all source the antigen script
+source $ZSH_CUSTOM/antigen.zsh
+
+# Load the oh-my-zsh's library.
+antigen use oh-my-zsh
+
+#----------------------------------------------------------------------
+# Bundles from custom plugins
+##----------------------------------------------------------------------
+# Syntax highlighting bundle.
+antigen bundle zsh-users/zsh-syntax-highlighting
+
+# Enhanced cd
+antigen bundle b4b4r07/enhancd
+
+# Auto-completion definitions
+antigen bundle zsh-users/zsh-completions
+
+# Tell Antigen that you're done.
+antigen apply
