@@ -7,6 +7,10 @@ alias zshc="chezmoi edit $HOME/.zshrc"
 alias vimc="chezmoi edit $HOME/.vimrc"
 alias tmuxc="chezmoi edit $HOME/.tmux.conf"
 alias bashc="chezmoi edit $HOME/.bashrc"
+alias bashpc="chezmoi edit $HOME/.bash_profile"
+alias galiasc="chezmoi edit $HOME/.aliases/global.aliases"
+alias laliasc="chezmoi edit $HOME/.aliases/local.aliases"
+alias slatec="chezmoi edit $HOME/.slate"
 
 # Productivity
 alias szsh="source $HOME/.zshrc"
