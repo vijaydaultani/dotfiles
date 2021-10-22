@@ -2,11 +2,11 @@
 alias epath="echo $PATH | tr -s ':' '\n'"
 alias elibpath="echo $LD_LIBRARY_PATH | tr -s ':' '\n'"
 
-# Opening configuration files
-alias zshc="vim $HOME/.zshrc"
-alias szsh="source $HOME/.zshrc"
-alias bashc="vim $HOME/.bashrc"
-alias ohmyzshc="vim $HOME/.oh-my-zsh"
+# Configure opening all the dot files in chezmoi edit
+alias zshc="chezmoi edit $HOME/.zshrc"
+alias vimc="chezmoi edit $HOME/.vimrc"
+alias tmuxc="chezmoi edit $HOME/.tmux.conf"
+alias bashc="chezmoi edit $HOME/.bashrc"
 
 # Productivity
 alias szsh="source $HOME/.zshrc"
