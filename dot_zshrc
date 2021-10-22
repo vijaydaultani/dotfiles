@@ -55,7 +55,7 @@ source $ZSH/oh-my-zsh.sh
 # Load the aliases
 [[ ! -f $HOME/.aliases/global.aliases ]] && \
     source $HOME/.aliases/global.aliases
-[[ ! -f $HOME/.aliases/local.aliases ]] && \
+[[ -f $HOME/.aliases/local.aliases ]] && \
     source $HOME/.aliases/local.aliases
 
 # To customize prompt, run `p10k configure` or edit $HOME/.p10k.zsh.
