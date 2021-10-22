@@ -77,6 +77,9 @@ map <Leader>r :set relativenumber!
 " https://unix.stackexchange.com/questions/111558/how-can-i-constantly-see-the-current-filename-in-vim
 set laststatus=2
 
+" Configure vim to run chezmoi apply whenever you save a dotfile
+autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path "%"
+
 "Load up all of our plugins 
 if filereadable(expand("$HOME/.vim/vimrc.bundles"))
     source $HOME/.vim/vimrc.bundles 
