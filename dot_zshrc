@@ -20,6 +20,7 @@ export PATH="${ANT_HOME}/bin:$PATH"
 export PATH="${MAVEN_HOME}/bin:$PATH"
 export PATH="${JAVA_HOME}/bin:$PATH"
 export PATH="${RUBY_HOME}:$PATH"
+export PATH="$HOME/.gem/ruby/3.0.0/bin:$PATH"
 # commented out by conda initialize
 # export PATH="$HOME/local/opt/anaconda2/bin:$PATH"
 # export PATH="$HOME/local/opt/anaconda3/bin:$PATH"  
