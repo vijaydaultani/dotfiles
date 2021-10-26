@@ -25,7 +25,7 @@ call vundle#begin('$HOME/.vim/bundle')
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'vim-python/python-syntax'
 Plugin 'easymotion/vim-easymotion'
-Plugin 'humiaozuzu/tabbar'
+"Plugin 'humiaozuzu/tabbar'
 Plugin 'preservim/nerdtree'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'google/yapf'
