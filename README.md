@@ -32,6 +32,12 @@ git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 sh -c "$(curl -fsLS git.io/chezmoi)"
 ```
 
+## Tool specific settings
+* Install Powerline for Tmux
+```
+git clone https://github.com/erikw/tmux-powerline.git $HOME/.tmux/plugins/tmux-powerline
+```
+
 ## Setup Chezmoi
 
 * Initialize chezmoi repo from github
