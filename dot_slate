@@ -9,9 +9,9 @@ config windowHintsSpread true
 config windowHintsOrder persist
 
 # Monitor Aliases
-alias mac			1680x1050
-alias center-fat	3008x1692
-alias right-tall	1050x1050
+alias mac			0
+alias center-fat	1
+alias right-tall	2
 
 # Misc Aliases
 alias showNormalHint hint AOEUIDHTNSYXFBPKGMCW
