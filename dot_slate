@@ -140,7 +140,7 @@ layout 2monitors ${thunder}:MAIN_FIRST      ${1-middle}
 layout 2monitors ${mail}:MAIN_FIRST         ${1-middle}
 layout 2monitors ${whatsapp}:MAIN_FIRST     ${0-full}
 layout 2monitors ${viber}:MAIN_FIRST        ${0-full}
-layout 2monitors ${chime}:MAIN_FIRST        ${0-full}
+layout 2monitors ${teams}:MAIN_FIRST        ${0-full}
 layout 2monitors ${slack}:MAIN_FIRST        ${0-full}
 layout 2monitors ${macdown}:MAIN_FIRST      ${1-middle}
 layout 2monitors ${sublime}:MAIN_FIRST      ${1-lowerLeft}
