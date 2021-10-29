@@ -12,6 +12,7 @@ export ANT_HOME="$HOME/local/source/ant"
 export MAVEN_HOME="$HOME/local/source/apache-maven-3.8.1"
 export VIMINIT="source $HOME/.vimrc"
 export RUBY_HOME="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.0.0/bin"
+export KAGGLE_CONFIG_DIR="$HOME/.kaggle/kaggle.json"
 
 # Expand path variable
 export PATH=$HOME/bin:/usr/local/bin:$PATH
