@@ -22,6 +22,11 @@ git clone https://github.com/VundleVim/Vundle.vim.git $HOME/.vim/bundle/Vundle.v
 curl -L git.io/antigen > $ZSH_CUSTOM/antigen.zsh
 ```
 
+* Install zsh-autosuggestion
+```
+git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $HOME/.oh-my-zsh/custom/plugins
+```
+
 * Install TPM plugin manager for tmux
 ```
 git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm

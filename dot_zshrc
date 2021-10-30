@@ -47,6 +47,9 @@ export ZSH_CUSTOM="$ZSH/custom"
     source $HOME/.autojump/etc/profile.d/autojump.sh
 autoload -U compinit && compinit -u
 
+# Add zsh autocomplete
+source $HOME/.oh-my-zsh/custom/plugins/zsh-autocomplete/zsh-autocomplete.plugin.zsh
+
 # Load plugins directly from the plugin manager of zsh
 # Example format: plugins=(rails git textmate ruby lighthouse)
 plugins=(git)
