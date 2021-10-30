@@ -27,6 +27,11 @@ curl -L git.io/antigen > $ZSH_CUSTOM/antigen.zsh
 git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $HOME/.oh-my-zsh/custom/plugins/zsh-autocomplete
 ```
 
+* Install zsh-syntax-highlight
+```
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+```
+
 * Install TPM plugin manager for tmux
 ```
 git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
