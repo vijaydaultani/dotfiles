@@ -9,9 +9,9 @@ config windowHintsSpread true
 config windowHintsOrder persist
 
 # Monitor Aliases
-alias mac			0
-alias center-fat	1
-alias right-tall	2
+alias mac           0
+alias center-fat    1
+alias right-tall    2
 
 # Misc Aliases
 alias showNormalHint hint AOEUIDHTNSYXFBPKGMCW
@@ -54,69 +54,69 @@ alias omni 'Bear'
 # Abstract positions
 # command format move topLeftX;topLeftY sizeX;sizeY screen
 #----------------------------------------------------------------------
-alias full          move screenOriginX;screenOriginY										screenSizeX;screenSizeY
+alias full          move screenOriginX;screenOriginY                                        screenSizeX;screenSizeY
 
 # For Wide Monitor
-#alias center       move screenOriginX+screenSizeX*0.35;screenOriginY+screenSizeY*0.07		screenSizeX*0.3;screenSizeY*0.6
+#alias center       move screenOriginX+screenSizeX*0.35;screenOriginY+screenSizeY*0.07      screenSizeX*0.3;screenSizeY*0.6
 
 # For imac
-alias center        move screenOriginX+screenSizeX*0.20;screenOriginY+screenSizeY*0.07		screenSizeX*0.60;screenSizeY*0.6
-alias centerMiddle  move screenOriginX+screenSizeX*0.30;screenOriginY+screenSizeY*0.2		screenSizeX*0.40;screenSizeY*0.6
-alias leftHalf      move screenOriginX;screenOriginY										screenSizeX/2;screenSizeY
-alias rightHalf     move screenOriginX+screenSizeX/2;screenOriginY							screenSizeX/2;screenSizeY
+alias center        move screenOriginX+screenSizeX*0.20;screenOriginY+screenSizeY*0.07      screenSizeX*0.60;screenSizeY*0.6
+alias centerMiddle  move screenOriginX+screenSizeX*0.30;screenOriginY+screenSizeY*0.2       screenSizeX*0.40;screenSizeY*0.6
+alias leftHalf      move screenOriginX;screenOriginY                                        screenSizeX/2;screenSizeY
+alias rightHalf     move screenOriginX+screenSizeX/2;screenOriginY                          screenSizeX/2;screenSizeY
 
-alias leftTwoThird  move screenOriginX;screenOriginY										screenSizeX*0.6667;screenSizeY
-alias rightTwoThird move screenOriginX+screenSizeX*0.3334;screenOriginY						screenSizeX*0.6667;screenSizeY
+alias leftTwoThird  move screenOriginX;screenOriginY                                        screenSizeX*0.6667;screenSizeY
+alias rightTwoThird move screenOriginX+screenSizeX*0.3334;screenOriginY                     screenSizeX*0.6667;screenSizeY
 
-alias leftMost      move screenOriginX;screenOriginY										screenSizeX*0.20;screenSizeY
-alias middle        move screenOriginX+screenSizeX*0.20;screenOriginY						screenSizeX*0.60;screenSizeY     
-alias rightMost     move screenOriginX+screenSizeX*0.80;screenOriginY						screenSizeX*0.20;screenSizeY
+alias leftMost      move screenOriginX;screenOriginY                                        screenSizeX*0.20;screenSizeY
+alias middle        move screenOriginX+screenSizeX*0.20;screenOriginY                       screenSizeX*0.60;screenSizeY
+alias rightMost     move screenOriginX+screenSizeX*0.80;screenOriginY                       screenSizeX*0.20;screenSizeY
 
-alias upperLeft     move screenOriginX;screenOriginY										screenSizeX*0.2;screenSizeY*0.5
-alias lowerLeft     move screenOriginX;screenOriginY+screenSizeY*0.5						screenSizeX*0.2;screenSizeY*0.5
-alias upperRight    move screenOriginX+screenSizeX*0.8;screenOriginY						screenSizeX*0.2;screenSizeY*0.5
-alias lowerRight    move screenOriginX+screenSizeX*0.8;screenOriginY+screenSizeY*0.5		screenSizeX*0.2;screenSizeY*0.5
+alias upperLeft     move screenOriginX;screenOriginY                                        screenSizeX*0.2;screenSizeY*0.5
+alias lowerLeft     move screenOriginX;screenOriginY+screenSizeY*0.5                        screenSizeX*0.2;screenSizeY*0.5
+alias upperRight    move screenOriginX+screenSizeX*0.8;screenOriginY                        screenSizeX*0.2;screenSizeY*0.5
+alias lowerRight    move screenOriginX+screenSizeX*0.8;screenOriginY+screenSizeY*0.5        screenSizeX*0.2;screenSizeY*0.5
 
-alias topCenter     move screenOriginX+screenSizeX/2-windowSizeX/2;screenOriginY+screenSizeY*0.1	windowSizeX;windowSizeY
+alias topCenter     move screenOriginX+screenSizeX/2-windowSizeX/2;screenOriginY+screenSizeY*0.1    windowSizeX;windowSizeY
 
 #----------------------------------------------------------------------
 # Concrete positions
 #----------------------------------------------------------------------
-alias 0-full	        ${full}		 		${mac}
-alias 1-full	        ${full}		 		${center-fat}
-alias 2-full	        ${full}		 		${right-tall}
+alias 0-full            ${full}             ${mac}
+alias 1-full            ${full}             ${center-fat}
+alias 2-full            ${full}             ${right-tall}
 
-alias 0-left    	    ${leftHalf} 		${mac}
-alias 1-left    	    ${leftHalf} 		${center-fat}
-alias 2-left    	    ${leftHalf} 		${right-tall}
+alias 0-left            ${leftHalf}         ${mac}
+alias 1-left            ${leftHalf}         ${center-fat}
+alias 2-left            ${leftHalf}         ${right-tall}
 
-alias 0-leftTwoThird	${leftTwoThird}		${mac}
-alias 1-leftTwoThird	${leftTwoThird}		${center-fat}
-alias 2-leftTwoThird	${leftTwoThird}		${right-tall}
+alias 0-leftTwoThird    ${leftTwoThird}     ${mac}
+alias 1-leftTwoThird    ${leftTwoThird}     ${center-fat}
+alias 2-leftTwoThird    ${leftTwoThird}     ${right-tall}
 
-alias 0-rightTwoThird   ${rightTwoThird}	${mac}
-alias 1-rightTwoThird   ${rightTwoThird}	${center-fat}
-alias 2-rightTwoThird   ${rightTwoThird}	${right-tall}
+alias 0-rightTwoThird   ${rightTwoThird}    ${mac}
+alias 1-rightTwoThird   ${rightTwoThird}    ${center-fat}
+alias 2-rightTwoThird   ${rightTwoThird}    ${right-tall}
 
-alias 0-right       	${rightHalf}		${mac}
-alias 1-right       	${rightHalf}		${center-fat}
-alias 2-right       	${rightHalf}		${right-tall}
+alias 0-right           ${rightHalf}        ${mac}
+alias 1-right           ${rightHalf}        ${center-fat}
+alias 2-right           ${rightHalf}        ${right-tall}
 
-alias 0-center			${center} 			${mac}
-alias 1-center			${center} 			${center-fat}
-alias 2-center			${center} 			${right-tall}
+alias 0-center          ${center}           ${mac}
+alias 1-center          ${center}           ${center-fat}
+alias 2-center          ${center}           ${right-tall}
 
-alias 1-leftMost		${leftMost}			${center-fat}
-alias 1-middle			${middle}			${center-fat}
-alias 1-centerMiddle	${centerMiddle}		${center-fat}
-alias 1-rightMost		${rightMost}		${center-fat}
+alias 1-leftMost        ${leftMost}         ${center-fat}
+alias 1-middle          ${middle}           ${center-fat}
+alias 1-centerMiddle    ${centerMiddle}     ${center-fat}
+alias 1-rightMost       ${rightMost}        ${center-fat}
 
-alias 1-upperLeft		${upperLeft} 		${center-fat}
-alias 1-lowerLeft		${lowerLeft} 		${center-fat}
-alias 1-upperRight		${upperRight} 		${center-fat}
-alias 1-lowerRight		${lowerRight} 		${center-fat}
+alias 1-upperLeft       ${upperLeft}        ${center-fat}
+alias 1-lowerLeft       ${lowerLeft}        ${center-fat}
+alias 1-upperRight      ${upperRight}       ${center-fat}
+alias 1-lowerRight      ${lowerRight}       ${center-fat}
 
-alias 1-topCenter		${topCenter} 		${center-fat}
+alias 1-topCenter       ${topCenter}        ${center-fat}
 
 #----------------------------------------------------------------------
 # Monitor Layouts - Fixing application locations
@@ -149,9 +149,9 @@ layout 2monitors ${safari}:MAIN_FIRST       ${1-middle}
 layout 2monitors ${omni}:MAIN_FIRST         ${1-middle}
 
 # Default Layouts
-default 3monitors 	resolutions:${center-fat};${right-tall};${mac};
-default 2monitors 	resolutions:${mac};${center-fat};
-default 1monitor  	resolutions:${mac}
+default 3monitors   resolutions:${center-fat};${right-tall};${mac};
+default 2monitors   resolutions:${mac};${center-fat};
+default 1monitor    resolutions:${mac}
 
 #----------------------------------------------------------------------
 # snapshot settings
@@ -167,21 +167,21 @@ bind a:ctrl,alt activate-snapshot slateCurrentSnapshot delete
 #----------------------------------------------------------------------
 alias hyper-pos ctrl;alt;shift
 
-#bind b:${hyper-pos} 	${wideCenter}
-bind h:${hyper-pos} 	${1-middle}
-bind f:${hyper-pos} 	${1-leftMost}
-bind j:${hyper-pos} 	${1-rightMost}
-bind g:${hyper-pos} 	${1-centerMiddle} 
-bind t:${hyper-pos} 	${1-topCenter}
-bind a:${hyper-pos} 	${1-leftTwoThird}
-bind l:${hyper-pos} 	${1-rightTwoThird}
+#bind b:${hyper-pos}    ${wideCenter}
+bind h:${hyper-pos}     ${1-middle}
+bind f:${hyper-pos}     ${1-leftMost}
+bind j:${hyper-pos}     ${1-rightMost}
+bind g:${hyper-pos}     ${1-centerMiddle}
+bind t:${hyper-pos}     ${1-topCenter}
+bind a:${hyper-pos}     ${1-leftTwoThird}
+bind l:${hyper-pos}     ${1-rightTwoThird}
 
 
 # 4 corners key bindings
-bind home:${hyper-pos} 			${1-upperLeft}
-bind end:${hyper-pos} 			${1-lowerLeft}
-bind pageUp:${hyper-pos} 		${1-upperRight}
-bind pageDown:${hyper-pos} 		${1-lowerRight}
+bind home:${hyper-pos}          ${1-upperLeft}
+bind end:${hyper-pos}           ${1-lowerLeft}
+bind pageUp:${hyper-pos}        ${1-upperRight}
+bind pageDown:${hyper-pos}      ${1-lowerRight}
 
 #----------------------------------------------------------------------
 # key binding to focus on apps
@@ -197,14 +197,14 @@ bind g:${hyper-app} grid padding:5 0:3,3 1:4,4 2:3,4
 
 # App bindings
 # f with finder creates error with full screen shortcut
-bind t:${hyper-app}		focus ${teams}
-bind s:${hyper-app}		focus ${spotify}
-bind c:${hyper-app}		focus ${chrome}
-bind f:${hyper-app}		focus ${fantastical}
-bind l:${hyper-app}		focus ${things}
-bind m:${hyper-app}		focus ${mail}
-bind d:${hyper-app}		focus ${finder}
-bind i:${hyper-app}		focus ${terminal}
+bind t:${hyper-app}     focus ${teams}
+bind s:${hyper-app}     focus ${spotify}
+bind c:${hyper-app}     focus ${chrome}
+bind f:${hyper-app}     focus ${fantastical}
+bind l:${hyper-app}     focus ${things}
+bind m:${hyper-app}     focus ${mail}
+bind d:${hyper-app}     focus ${finder}
+bind i:${hyper-app}     focus ${terminal}
 
 # Focus Bindings
 bind right:${hyper-app}    focus right
@@ -219,7 +219,7 @@ bind left:${hyper-app}     focus left
 #----------------------------------------------------------------------
 # Not used aliases
 #----------------------------------------------------------------------
-# alias wideCenter    move screenOriginX+(screenSizeX/2-(screenSizeX*0.4));screenOriginY+(screenSizeY/2-(screenSizeY*0.4))	screenSizeX*0.8;screenSizeY*0.8
+# alias wideCenter    move screenOriginX+(screenSizeX/2-(screenSizeX*0.4));screenOriginY+(screenSizeY/2-(screenSizeY*0.4))  screenSizeX*0.8;screenSizeY*0.8
 
 #----------------------------------------------------------------------
 # End
