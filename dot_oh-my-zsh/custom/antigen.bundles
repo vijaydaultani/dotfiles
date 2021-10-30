@@ -7,14 +7,20 @@ antigen use oh-my-zsh
 #----------------------------------------------------------------------
 # Bundles from custom plugins
 ##----------------------------------------------------------------------
-# Syntax highlighting bundle.
+# It enables highlighting of commands whilst they are typed at a zsh prompt into an interactive terminal
 antigen bundle zsh-users/zsh-syntax-highlighting
-
-# Enhanced cd
-antigen bundle b4b4r07/enhancd
 
 # Auto-completion definitions
 antigen bundle zsh-users/zsh-completions
+
+# It suggests commands as you type based on history and completions.
+antigen bundle zsh-users/zsh-autosuggestions
+
+# Jump quickly to directories that you have visited frecency
+antigen bundle agkozak/zsh-z
+
+# Enhanced cd
+antigen bundle b4b4r07/enhancd
 
 # Tell Antigen that you're done.
 antigen apply
