@@ -24,7 +24,7 @@ curl -L git.io/antigen > $ZSH_CUSTOM/antigen.zsh
 
 * Install zsh-autosuggestion
 ```
-git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $HOME/.oh-my-zsh/custom/plugins
+git clone --depth 1 -- https://github.com/marlonrichert/zsh-autocomplete.git $HOME/.oh-my-zsh/custom/plugins/zsh-autocomplete
 ```
 
 * Install TPM plugin manager for tmux
