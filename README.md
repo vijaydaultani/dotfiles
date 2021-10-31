@@ -48,6 +48,16 @@ sh -c "$(curl -fsLS git.io/chezmoi)"
 git clone https://github.com/erikw/tmux-powerline.git $HOME/.tmux/plugins/tmux-powerline
 ```
 
+* Homebrew, Dump bundles list in Brewfile, run from home directory
+```
+brew bundle dump
+```
+
+* Homebrew: Install all the bundles listed in the Brewfile
+```
+brew bundle install
+```
+
 ## Setup Chezmoi
 
 * Initialize chezmoi repo from github
