@@ -58,6 +58,19 @@ brew bundle dump
 brew bundle install
 ```
 
+* Neovim: Install neovim on macos
+```
+brew install neovim
+```
+
+* Neovim: Install neovim on linux
+```
+curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+chmod u+x nvim.appimage
+mv nvim.appimage $HOME/local/bin
+ln -s $HOME/local/bin/nvim.appimage $HOME/local/bin/nvim
+```
+
 ## Setup Chezmoi
 
 * Initialize chezmoi repo from github

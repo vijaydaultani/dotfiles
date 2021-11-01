@@ -5,3 +5,4 @@ exec $SHELL -l
 # Update all the dotfiles everytime you login the system
 # So that your version is never out of sync from server
 # chezmoi update
+. "$HOME/.cargo/eng"
