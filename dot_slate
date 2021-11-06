@@ -127,7 +127,7 @@ alias 1-lowerLeft       ${lowerLeft}        ${center-fat}
 alias 1-upperRight      ${upperRight}       ${center-fat}
 alias 1-lowerRight      ${lowerRight}       ${center-fat}
 
-alias 1-topCenter       ${topCenter}        ${center-fat}
+alias 0-topCenter       ${topCenter}        ${mac}
 alias 1-topCenter       ${topCenter}        ${center-fat}
 
 #----------------------------------------------------------------------
@@ -208,13 +208,13 @@ bind a:ctrl,alt activate-snapshot slateCurrentSnapshot delete
 alias hyper-pos ctrl;alt;shift
 
 #bind b:${hyper-pos}    ${wideCenter}
-bind h:${hyper-pos}     ${1-middle}
-bind f:${hyper-pos}     ${1-leftMost}
-bind j:${hyper-pos}     ${1-rightMost}
-bind g:${hyper-pos}     ${1-centerMiddle}
-bind t:${hyper-pos}     ${1-topCenter}
-bind a:${hyper-pos}     ${1-leftTwoThird}
-bind l:${hyper-pos}     ${1-rightTwoThird}
+bind h:${hyper-pos}     ${0-middle}
+bind f:${hyper-pos}     ${0-leftMost}
+bind j:${hyper-pos}     ${0-rightMost}
+bind g:${hyper-pos}     ${0-centerMiddle}
+bind t:${hyper-pos}     ${0-topCenter}
+bind a:${hyper-pos}     ${0-leftTwoThird}
+bind l:${hyper-pos}     ${0-rightTwoThird}
 
 
 # 4 corners key bindings
