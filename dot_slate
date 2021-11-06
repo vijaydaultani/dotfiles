@@ -12,6 +12,9 @@ config windowHintsOrder persist
 alias mac           0
 alias center-fat    1
 alias right-tall    2
+# alias mac-16        3072 × 1920
+# alias mac-15        2880 x 1800
+# alias lg-4k         3840 × 2160
 
 # Misc Aliases
 alias showNormalHint hint AOEUIDHTNSYXFBPKGMCW
@@ -106,52 +109,89 @@ alias 0-center          ${center}           ${mac}
 alias 1-center          ${center}           ${center-fat}
 alias 2-center          ${center}           ${right-tall}
 
+alias 0-leftMost        ${leftMost}         ${mac}
+alias 0-middle          ${middle}           ${mac}
+alias 0-centerMiddle    ${centerMiddle}     ${mac}
+alias 0-rightMost       ${rightMost}        ${mac}
 alias 1-leftMost        ${leftMost}         ${center-fat}
 alias 1-middle          ${middle}           ${center-fat}
 alias 1-centerMiddle    ${centerMiddle}     ${center-fat}
 alias 1-rightMost       ${rightMost}        ${center-fat}
 
+alias 0-upperLeft       ${upperLeft}        ${mac}
+alias 0-lowerLeft       ${lowerLeft}        ${mac}
+alias 0-upperRight      ${upperRight}       ${mac}
+alias 0-lowerRight      ${lowerRight}       ${mac}
 alias 1-upperLeft       ${upperLeft}        ${center-fat}
 alias 1-lowerLeft       ${lowerLeft}        ${center-fat}
 alias 1-upperRight      ${upperRight}       ${center-fat}
 alias 1-lowerRight      ${lowerRight}       ${center-fat}
 
 alias 1-topCenter       ${topCenter}        ${center-fat}
+alias 1-topCenter       ${topCenter}        ${center-fat}
 
 #----------------------------------------------------------------------
 # Monitor Layouts - Fixing application locations
 #----------------------------------------------------------------------
-layout 2monitors ${finder}:MAIN_FIRST       ${1-lowerRight}
-layout 2monitors ${agenda}:MAIN_FIRST       ${1-lowerLeft}
-layout 2monitors ${spotify}:MAIN_FIRST      ${0-full}
-layout 2monitors ${chrome}:MAIN_FIRST       ${1-middle}
-layout 2monitors ${quip}:MAIN_FIRST         ${1-leftMost}
-layout 2monitors ${pdfexpert}:MAIN_FIRST    ${0-center}
-layout 2monitors ${terminal}:MAIN_FIRST     ${1-full}
-layout 2monitors ${trello}:MAIN_FIRST       ${0-full}
-layout 2monitors ${dash}:MAIN_FIRST         ${1-full}
-layout 2monitors ${mendeley}:MAIN_FIRST     ${1-full}
-layout 2monitors ${wunderlist}:MAIN_FIRST   ${1-upperLeft}
-layout 2monitors ${todo}:MAIN_FIRST         ${1-upperLeft}
-layout 2monitors ${things}:MAIN_FIRST       ${1-upperLeft}
-layout 2monitors ${fantastical}:MAIN_FIRST  ${1-upperRight}
-layout 2monitors ${reeder}:MAIN_FIRST       ${1-full}
-layout 2monitors ${thunder}:MAIN_FIRST      ${1-middle}
-layout 2monitors ${mail}:MAIN_FIRST         ${1-middle}
-layout 2monitors ${whatsapp}:MAIN_FIRST     ${0-full}
-layout 2monitors ${viber}:MAIN_FIRST        ${0-full}
-layout 2monitors ${teams}:MAIN_FIRST        ${0-full}
-layout 2monitors ${slack}:MAIN_FIRST        ${0-full}
-layout 2monitors ${macdown}:MAIN_FIRST      ${1-middle}
-layout 2monitors ${sublime}:MAIN_FIRST      ${1-lowerLeft}
-layout 2monitors ${bear}:MAIN_FIRST         ${1-lowerRight}
-layout 2monitors ${safari}:MAIN_FIRST       ${1-middle}
-layout 2monitors ${omni}:MAIN_FIRST         ${1-middle}
+layout 2monitors_left ${finder}        ${1-lowerRight}
+layout 2monitors_left ${agenda}        ${1-lowerLeft}
+layout 2monitors_left ${spotify}       ${0-full}
+layout 2monitors_left ${chrome}        ${1-middle}
+layout 2monitors_left ${quip}          ${1-leftMost}
+layout 2monitors_left ${pdfexpert}     ${0-center}
+layout 2monitors_left ${terminal}      ${1-full}
+layout 2monitors_left ${trello}        ${0-full}
+layout 2monitors_left ${dash}          ${1-full}
+layout 2monitors_left ${mendeley}      ${1-full}
+layout 2monitors_left ${wunderlist}    ${1-upperLeft}
+layout 2monitors_left ${todo}          ${1-upperLeft}
+layout 2monitors_left ${things}        ${1-upperLeft}
+layout 2monitors_left ${fantastical}   ${1-upperRight}
+layout 2monitors_left ${reeder}        ${1-full}
+layout 2monitors_left ${thunder}       ${1-middle}
+layout 2monitors_left ${mail}          ${1-middle}
+layout 2monitors_left ${whatsapp}      ${0-full}
+layout 2monitors_left ${viber}         ${0-full}
+layout 2monitors_left ${teams}         ${0-full}
+layout 2monitors_left ${slack}         ${0-full}
+layout 2monitors_left ${macdown}       ${1-middle}
+layout 2monitors_left ${sublime}       ${1-lowerLeft}
+layout 2monitors_left ${bear}          ${1-lowerRight}
+layout 2monitors_left ${safari}        ${1-middle}
+layout 2monitors_left ${omni}          ${1-middle}
+
+
+layout 2monitors_right ${finder}        ${0-lowerRight}
+layout 2monitors_right ${agenda}        ${0-lowerLeft}
+layout 2monitors_right ${spotify}       ${1-full}
+layout 2monitors_right ${chrome}        ${0-middle}
+layout 2monitors_right ${quip}          ${0-leftMost}
+layout 2monitors_right ${pdfexpert}     ${1-center}
+layout 2monitors_right ${terminal}      ${0-full}
+layout 2monitors_right ${trello}        ${1-full}
+layout 2monitors_right ${dash}          ${0-full}
+layout 2monitors_right ${mendeley}      ${0-full}
+layout 2monitors_right ${wunderlist}    ${0-upperLeft}
+layout 2monitors_right ${todo}          ${0-upperLeft}
+layout 2monitors_right ${things}        ${0-upperLeft}
+layout 2monitors_right ${fantastical}   ${0-upperRight}
+layout 2monitors_right ${reeder}        ${0-full}
+layout 2monitors_right ${thunder}       ${0-middle}
+layout 2monitors_right ${mail}          ${0-middle}
+layout 2monitors_right ${whatsapp}      ${1-full}
+layout 2monitors_right ${viber}         ${1-full}
+layout 2monitors_right ${teams}         ${1-full}
+layout 2monitors_right ${slack}         ${1-full}
+layout 2monitors_right ${macdown}       ${0-middle}
+layout 2monitors_right ${sublime}       ${0-lowerLeft}
+layout 2monitors_right ${bear}          ${0-lowerRight}
+layout 2monitors_right ${safari}        ${0-middle}
+layout 2monitors_right ${omni}          ${0-middle}
 
 # Default Layouts
-default 3monitors   resolutions:${center-fat};${right-tall};${mac};
-default 2monitors   resolutions:${mac};${center-fat};
-default 1monitor    resolutions:${mac}
+# default 3monitors   resolutions:${center-fat};${right-tall};${mac};
+# default 2monitors   resolutions:${mac};${center-fat};
+# default 1monitor    resolutions:${mac}
 
 #----------------------------------------------------------------------
 # snapshot settings
@@ -189,7 +229,8 @@ bind pageDown:${hyper-pos}      ${1-lowerRight}
 alias hyper-app cmd;ctrl
 
 # Activate 2monitors layout
-bind f14:${hyper-app} layout 2monitors
+bind f14:${hyper-app} layout 2monitors_left
+bind f15:${hyper-app} layout 2monitors_right
 
 # show suggestions
 bind h:${hyper-app} ${showNormalHint}
