@@ -34,7 +34,7 @@ set backspace=indent,eol,start
 
 " Highlight only current line of cursor
 " http://vim.wikia.com/wiki/Highlight_current_line
-:hi CursorLine   cterm=NONE ctermbg=lightblue ctermfg=black guibg=gray guifg=white
+:hi CursorLine   cterm=NONE ctermbg=lightblue ctermfg=black guibg=gray guifg=darkred
 :nnoremap <Leader>b :set cursorline!<CR> 
 
 " Map a specific key or shortcut for showing line numbers in normal mode
