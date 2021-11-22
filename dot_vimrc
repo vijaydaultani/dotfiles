@@ -80,6 +80,9 @@ set laststatus=2
 " Configure vim to run chezmoi apply whenever you save a dotfile
 autocmd BufWritePost ~/.local/share/chezmoi/* ! chezmoi apply --source-path "%"
 
+" Support for exuberant ctags on macos
+let g:Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
+
 "Load up all of our plugins 
 if filereadable(expand("$HOME/.vim/vimrc.bundles"))
     source $HOME/.vim/vimrc.bundles 

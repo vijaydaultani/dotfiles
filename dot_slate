@@ -51,7 +51,7 @@ alias sublime 'Sublime Text'
 alias quip 'Quip'
 alias mendeley 'Mendeley Desktop'
 alias omni 'OmniPlan'
-alias omni 'Bear'
+alias bear 'Bear'
 
 #----------------------------------------------------------------------
 # Abstract positions
@@ -150,6 +150,7 @@ layout 2monitors_left ${fantastical}   ${1-upperRight}
 layout 2monitors_left ${reeder}        ${1-full}
 layout 2monitors_left ${thunder}       ${1-middle}
 layout 2monitors_left ${mail}          ${1-middle}
+layout 2monitors_right ${outlook}      ${1-middle}
 layout 2monitors_left ${whatsapp}      ${0-full}
 layout 2monitors_left ${viber}         ${0-full}
 layout 2monitors_left ${teams}         ${0-full}
@@ -178,6 +179,7 @@ layout 2monitors_right ${fantastical}   ${0-upperRight}
 layout 2monitors_right ${reeder}        ${0-full}
 layout 2monitors_right ${thunder}       ${0-middle}
 layout 2monitors_right ${mail}          ${0-middle}
+layout 2monitors_right ${outlook}       ${0-middle}
 layout 2monitors_right ${whatsapp}      ${1-full}
 layout 2monitors_right ${viber}         ${1-full}
 layout 2monitors_right ${teams}         ${1-full}
@@ -205,23 +207,36 @@ bind a:ctrl,alt activate-snapshot slateCurrentSnapshot delete
 #----------------------------------------------------------------------
 # key binding for moving apps on certain position
 #----------------------------------------------------------------------
-alias hyper-pos ctrl;alt;shift
+alias hyper-pos-1 ctrl;alt;shift
+alias hyper-pos-2 ctrl;alt;shift;cmd
 
-#bind b:${hyper-pos}    ${wideCenter}
-bind h:${hyper-pos}     ${0-middle}
-bind f:${hyper-pos}     ${0-leftMost}
-bind j:${hyper-pos}     ${0-rightMost}
-bind g:${hyper-pos}     ${0-centerMiddle}
-bind t:${hyper-pos}     ${0-topCenter}
-bind a:${hyper-pos}     ${0-leftTwoThird}
-bind l:${hyper-pos}     ${0-rightTwoThird}
+#bind b:${hyper-pos-1}    ${wideCenter}
+bind h:${hyper-pos-1}     ${0-middle}
+bind f:${hyper-pos-1}     ${0-leftMost}
+bind j:${hyper-pos-1}     ${0-rightMost}
+bind g:${hyper-pos-1}     ${0-centerMiddle}
+bind t:${hyper-pos-1}     ${0-topCenter}
+bind a:${hyper-pos-1}     ${0-leftTwoThird}
+bind l:${hyper-pos-1}     ${0-rightTwoThird}
 
+bind h:${hyper-pos-2}     ${1-middle}
+bind f:${hyper-pos-2}     ${1-leftMost}
+bind j:${hyper-pos-2}     ${1-rightMost}
+bind g:${hyper-pos-2}     ${1-centerMiddle}
+bind t:${hyper-pos-2}     ${1-topCenter}
+bind a:${hyper-pos-2}     ${1-leftTwoThird}
+bind l:${hyper-pos-2}     ${1-rightTwoThird}
 
 # 4 corners key bindings
-bind home:${hyper-pos}          ${1-upperLeft}
-bind end:${hyper-pos}           ${1-lowerLeft}
-bind pageUp:${hyper-pos}        ${1-upperRight}
-bind pageDown:${hyper-pos}      ${1-lowerRight}
+bind home:${hyper-pos-1}          ${0-upperLeft}
+bind end:${hyper-pos-1}           ${0-lowerLeft}
+bind pageUp:${hyper-pos-1}        ${0-upperRight}
+bind pageDown:${hyper-pos-1}      ${0-lowerRight}
+
+bind home:${hyper-pos-2}          ${1-upperLeft}
+bind end:${hyper-pos-2}           ${1-lowerLeft}
+bind pageUp:${hyper-pos-2}        ${1-upperRight}
+bind pageDown:${hyper-pos-2}      ${1-lowerRight}
 
 #----------------------------------------------------------------------
 # key binding to focus on apps
