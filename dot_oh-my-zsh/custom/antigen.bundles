@@ -19,6 +19,9 @@ antigen bundle agkozak/zsh-z
 # Enhanced cd
 antigen bundle b4b4r07/enhancd
 
+# Clipboard manager for pbcopy and pbpaste across machines
+antigen bundle zpm-zsh/clipboard
+
 # Tell Antigen that you're done.
 antigen apply
 
