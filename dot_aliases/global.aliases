@@ -20,8 +20,8 @@ alias sbash="source $HOME/.bashrc"
 alias ecvd="echo $CUDA_VISIBLE_DEVICES"
 
 # Copy from within terminals only for Mac
-# alias pbcopy="xclip -selection clipboard"
-# alias pbpaste="xclip -selection clipboard -o"
+alias pbcopy="xclip -selection clipboard"
+alias pbpaste="xclip -selection clipboard -o"
 
 #----------------------------------------------------------------------
 # Write custom functions
