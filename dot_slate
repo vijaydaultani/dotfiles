@@ -10,8 +10,8 @@ config windowHintsOrder persist
 
 # Monitor Aliases
 alias mac           0
-alias center-fat    1
-alias right-tall    2
+alias center-fat    2
+alias right-tall    1
 # alias mac-16        3072 × 1920
 # alias mac-15        2880 x 1800
 # alias lg-4k         3840 × 2160
@@ -67,6 +67,14 @@ alias center        move screenOriginX+screenSizeX*0.20;screenOriginY+screenSize
 alias centerMiddle  move screenOriginX+screenSizeX*0.30;screenOriginY+screenSizeY*0.2       screenSizeX*0.40;screenSizeY*0.6
 alias leftHalf      move screenOriginX;screenOriginY                                        screenSizeX/2;screenSizeY
 alias rightHalf     move screenOriginX+screenSizeX/2;screenOriginY                          screenSizeX/2;screenSizeY
+alias topHalf       move screenOriginX;screenOriginY                                        screenSizeX;screenSizeY/2
+alias bottomHalf    move screenOriginX;screenOriginY+screenSizeY/2                          screenSizeX;screenSizeY/2
+alias fullScreen    move screenOriginX;screenOriginY                                        screenSizeX;screenSizeY
+
+alias oneThirdFirst      move screenOriginX;screenOriginY                                   screenSizeX*0.3333;screenSizeY
+alias oneThirdSecond     move screenOriginX+screenSizeX*0.3333;screenOriginY                screenSizeX*0.3333;screenSizeY
+alias oneThirdThird      move screenOriginX+screenSizeX*0.6667;screenOriginY                 screenSizeX*0.3333;screenSizeY
+
 
 alias leftTwoThird  move screenOriginX;screenOriginY                                        screenSizeX*0.6667;screenSizeY
 alias rightTwoThird move screenOriginX+screenSizeX*0.3334;screenOriginY                     screenSizeX*0.6667;screenSizeY
@@ -164,7 +172,7 @@ layout 2monitors_left ${omni}          ${1-middle}
 
 layout 2monitors_right ${finder}        ${0-lowerRight}
 layout 2monitors_right ${agenda}        ${0-lowerLeft}
-layout 2monitors_right ${spotify}       ${1-full}
+layout 2monitors_right ${spotify}       ${0-lowerRight}
 layout 2monitors_right ${chrome}        ${0-middle}
 layout 2monitors_right ${quip}          ${0-leftMost}
 layout 2monitors_right ${pdfexpert}     ${1-center}
@@ -181,8 +189,8 @@ layout 2monitors_right ${thunder}       ${0-middle}
 layout 2monitors_right ${mail}          ${0-middle}
 layout 2monitors_right ${outlook}       ${0-middle}
 layout 2monitors_right ${whatsapp}      ${1-full}
-layout 2monitors_right ${viber}         ${1-full}
-layout 2monitors_right ${teams}         ${1-full}
+layout 2monitors_right ${viber}         ${0-upperLeft}
+layout 2monitors_right ${teams}         ${0-lowerLeft}
 layout 2monitors_right ${slack}         ${1-full}
 layout 2monitors_right ${macdown}       ${0-middle}
 layout 2monitors_right ${sublime}       ${0-lowerLeft}
@@ -209,23 +217,41 @@ bind a:ctrl,alt activate-snapshot slateCurrentSnapshot delete
 #----------------------------------------------------------------------
 alias hyper-pos-1 ctrl;alt;shift
 alias hyper-pos-2 ctrl;alt;shift;cmd
+alias hyper-pos-3 ctrl;shift;alt
+alias hyper-pos-4 ctrl;alt
+alias hyper-pos-5 ctrl;alt;cmd
 
 #bind b:${hyper-pos-1}    ${wideCenter}
-bind h:${hyper-pos-1}     ${0-middle}
-bind f:${hyper-pos-1}     ${0-leftMost}
-bind j:${hyper-pos-1}     ${0-rightMost}
-bind g:${hyper-pos-1}     ${0-centerMiddle}
-bind t:${hyper-pos-1}     ${0-topCenter}
-bind a:${hyper-pos-1}     ${0-leftTwoThird}
-bind l:${hyper-pos-1}     ${0-rightTwoThird}
+bind h:${hyper-pos-1}     ${middle}
+bind f:${hyper-pos-1}     ${leftMost}
+bind j:${hyper-pos-1}     ${rightMost}
+bind g:${hyper-pos-1}     ${centerMiddle}
+bind t:${hyper-pos-1}     ${topCenter}
+bind a:${hyper-pos-1}     ${leftTwoThird}
+bind l:${hyper-pos-1}     ${rightTwoThird}
 
-bind h:${hyper-pos-2}     ${1-middle}
-bind f:${hyper-pos-2}     ${1-leftMost}
-bind j:${hyper-pos-2}     ${1-rightMost}
-bind g:${hyper-pos-2}     ${1-centerMiddle}
-bind t:${hyper-pos-2}     ${1-topCenter}
-bind a:${hyper-pos-2}     ${1-leftTwoThird}
-bind l:${hyper-pos-2}     ${1-rightTwoThird}
+# bind h:${hyper-pos-2}     ${1-middle}
+# bind f:${hyper-pos-2}     ${1-leftMost}
+# bind j:${hyper-pos-2}     ${1-rightMost}
+# bind g:${hyper-pos-2}     ${1-centerMiddle}
+# bind t:${hyper-pos-2}     ${1-topCenter}
+# bind a:${hyper-pos-2}     ${1-leftTwoThird}
+# bind l:${hyper-pos-2}     ${1-rightTwoThird}
+
+bind right:${hyper-pos-4}       throw previous resize
+bind left:${hyper-pos-4}        throw next resize
+
+bind 1:${hyper-pos-3}        ${oneThirdFirst}
+bind 2:${hyper-pos-3}        ${oneThirdSecond}
+bind 3:${hyper-pos-3}        ${oneThirdThird}
+
+bind left:${hyper-pos-5}        ${leftHalf}
+bind right:${hyper-pos-5}       ${rightHalf}
+bind up:${hyper-pos-5}          ${topHalf}
+bind down:${hyper-pos-5}        ${bottomHalf}
+
+bind m:${hyper-pos-1}           ${fullScreen}
+bind c:${hyper-pos-1}           ${center}
 
 # 4 corners key bindings
 bind home:${hyper-pos-1}          ${0-upperLeft}
