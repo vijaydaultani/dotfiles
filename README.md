@@ -82,3 +82,6 @@ ln -s $HOME/local/bin/nvim.appimage $HOME/local/bin/nvim
 ```
 chezmoi update
 ```
+
+* Maintain the dot files
+Follow this tutorial: https://jerrynsh.com/how-to-manage-dotfiles-with-chezmoi/
