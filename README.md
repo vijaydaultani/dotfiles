@@ -48,6 +48,11 @@ sh -c "$(curl -fsLS git.io/chezmoi)"
 git clone https://github.com/erikw/tmux-powerline.git $HOME/.tmux/plugins/tmux-powerline
 ```
 
+* Install Powerlevel10k for Tmux
+```
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+```
+
 * Homebrew, Dump bundles list in Brewfile, run from home directory
 ```
 brew bundle dump
