@@ -91,6 +91,29 @@ yadm commit -m "Add newconfig"
 yadm push
 ```
 
+## Auto-Sync (Monthly Cron Job)
+
+A cron job runs on the 1st of each month at 10:00 AM to automatically commit and push any dotfile changes.
+
+- **Script:** `~/.yadm/sync-dotfiles.sh`
+- **Log file:** `~/.yadm/sync.log`
+
+### Setup on a New Machine
+
+```bash
+# Add the cron job
+(crontab -l 2>/dev/null; echo "# Sync dotfiles monthly"; echo "0 10 1 * * ~/.yadm/sync-dotfiles.sh") | crontab -
+
+# Verify
+crontab -l
+```
+
+### Manual Sync
+
+```bash
+~/.yadm/sync-dotfiles.sh
+```
+
 ## License
 
 MIT
