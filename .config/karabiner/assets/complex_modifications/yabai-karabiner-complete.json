@@ -1,0 +1,598 @@
+{
+  "title": "Yabai Window Management (Complete Slate + Rectangle Migration)",
+  "rules": [
+    {
+      "description": "Window Positioning on Display 2 (ctrl+alt+shift) - Slate bindings",
+      "manipulators": [
+        {
+          "description": "ctrl+alt+shift+h → middle (60% width) on display 2",
+          "type": "basic",
+          "from": {
+            "key_code": "h",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '1:5:1:0:3:1' 2" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+f → leftMost (20% width) on display 2",
+          "type": "basic",
+          "from": {
+            "key_code": "f",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '1:5:0:0:1:1' 2" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+j → rightMost (20% width) on display 2",
+          "type": "basic",
+          "from": {
+            "key_code": "j",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '1:5:4:0:1:1' 2" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+g → centerMiddle (40% width, 60% height) on display 2",
+          "type": "basic",
+          "from": {
+            "key_code": "g",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '5:5:1:1:2:3' 2" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+t → bring window to top-center (keep size)",
+          "type": "basic",
+          "from": {
+            "key_code": "t",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/bring_to_top.sh" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+a → leftTwoThird (66% width) on display 2",
+          "type": "basic",
+          "from": {
+            "key_code": "a",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '1:3:0:0:2:1' 2" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+l → rightTwoThird (66% width) on display 2",
+          "type": "basic",
+          "from": {
+            "key_code": "l",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '1:3:1:0:2:1' 2" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+home → upperLeft on display 2",
+          "type": "basic",
+          "from": {
+            "key_code": "home",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '2:5:0:0:1:1' 2" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+end → lowerLeft on display 2",
+          "type": "basic",
+          "from": {
+            "key_code": "end",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '2:5:0:1:1:1' 2" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+pageUp → upperRight on display 2",
+          "type": "basic",
+          "from": {
+            "key_code": "page_up",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '2:5:4:0:1:1' 2" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+pageDown → lowerRight on display 2",
+          "type": "basic",
+          "from": {
+            "key_code": "page_down",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '2:5:4:1:1:1' 2" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Rectangle-style: Center and Fullscreen (ctrl+alt+shift)",
+      "manipulators": [
+        {
+          "description": "ctrl+alt+shift+c → Center window",
+          "type": "basic",
+          "from": {
+            "key_code": "c",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '6:6:1:1:4:4'" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+m → Fullscreen (maximize)",
+          "type": "basic",
+          "from": {
+            "key_code": "m",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '1:1:0:0:1:1'" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Rectangle-style: Halves (ctrl+alt+cmd+arrows)",
+      "manipulators": [
+        {
+          "description": "ctrl+alt+cmd+left → Left Half",
+          "type": "basic",
+          "from": {
+            "key_code": "left_arrow",
+            "modifiers": { "mandatory": ["control", "option", "command"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '1:2:0:0:1:1'" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+cmd+right → Right Half",
+          "type": "basic",
+          "from": {
+            "key_code": "right_arrow",
+            "modifiers": { "mandatory": ["control", "option", "command"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '1:2:1:0:1:1'" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+cmd+up → Top Half",
+          "type": "basic",
+          "from": {
+            "key_code": "up_arrow",
+            "modifiers": { "mandatory": ["control", "option", "command"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '2:1:0:0:1:1'" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+cmd+down → Bottom Half",
+          "type": "basic",
+          "from": {
+            "key_code": "down_arrow",
+            "modifiers": { "mandatory": ["control", "option", "command"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '2:1:0:1:1:1'" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Rectangle-style: Quarters (ctrl+alt+shift+1/2/3/4)",
+      "manipulators": [
+        {
+          "description": "ctrl+alt+shift+1 → Upper Left quarter",
+          "type": "basic",
+          "from": {
+            "key_code": "1",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '2:2:0:0:1:1'" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+2 → Lower Left quarter",
+          "type": "basic",
+          "from": {
+            "key_code": "2",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '2:2:0:1:1:1'" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+3 → Upper Right quarter",
+          "type": "basic",
+          "from": {
+            "key_code": "3",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '2:2:1:0:1:1'" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+4 → Lower Right quarter",
+          "type": "basic",
+          "from": {
+            "key_code": "4",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/yabai_move.sh '2:2:1:1:1:1'" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Rectangle-style: Thirds (ctrl+alt+shift+arrows)",
+      "manipulators": [
+        {
+          "description": "ctrl+alt+shift+right → Next Third",
+          "type": "basic",
+          "from": {
+            "key_code": "right_arrow",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/cycle_thirds.sh next" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+left → Previous Third",
+          "type": "basic",
+          "from": {
+            "key_code": "left_arrow",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/cycle_thirds.sh prev" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Rectangle-style: Resize (ctrl+alt+shift+up/down)",
+      "manipulators": [
+        {
+          "description": "ctrl+alt+shift+up → Make Larger",
+          "type": "basic",
+          "from": {
+            "key_code": "up_arrow",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "/usr/local/bin/yabai -m window --resize top_left:-20:-20; /usr/local/bin/yabai -m window --resize bottom_right:20:20" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+shift+down → Make Smaller",
+          "type": "basic",
+          "from": {
+            "key_code": "down_arrow",
+            "modifiers": { "mandatory": ["control", "option", "shift"] }
+          },
+          "to": [
+            { "shell_command": "/usr/local/bin/yabai -m window --resize top_left:20:20; /usr/local/bin/yabai -m window --resize bottom_right:-20:-20" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Rectangle-style: Display switching (ctrl+alt+arrows)",
+      "manipulators": [
+        {
+          "description": "ctrl+alt+right → Move to Next Display",
+          "type": "basic",
+          "from": {
+            "key_code": "right_arrow",
+            "modifiers": { "mandatory": ["control", "option"] }
+          },
+          "to": [
+            { "shell_command": "/usr/local/bin/yabai -m window --display next; /usr/local/bin/yabai -m display --focus next" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+left → Move to Previous Display",
+          "type": "basic",
+          "from": {
+            "key_code": "left_arrow",
+            "modifiers": { "mandatory": ["control", "option"] }
+          },
+          "to": [
+            { "shell_command": "/usr/local/bin/yabai -m window --display prev; /usr/local/bin/yabai -m display --focus prev" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Rectangle-style: Undo/Redo",
+      "manipulators": [
+        {
+          "description": "alt+cmd+z → Undo window position",
+          "type": "basic",
+          "from": {
+            "key_code": "z",
+            "modifiers": { "mandatory": ["option", "command"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/undo_position.sh" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+cmd+z → Redo window position",
+          "type": "basic",
+          "from": {
+            "key_code": "z",
+            "modifiers": { "mandatory": ["control", "option", "command"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/scripts/redo_position.sh" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "App Focus (cmd+ctrl)",
+      "manipulators": [
+        {
+          "description": "cmd+ctrl+t → Microsoft Teams",
+          "type": "basic",
+          "from": {
+            "key_code": "t",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "open -a 'Microsoft Teams'" }
+          ]
+        },
+        {
+          "description": "cmd+ctrl+s → Spotify",
+          "type": "basic",
+          "from": {
+            "key_code": "s",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "open -a 'Spotify'" }
+          ]
+        },
+        {
+          "description": "cmd+ctrl+c → Google Chrome",
+          "type": "basic",
+          "from": {
+            "key_code": "c",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "open -a 'Google Chrome'" }
+          ]
+        },
+        {
+          "description": "cmd+ctrl+f → Fantastical",
+          "type": "basic",
+          "from": {
+            "key_code": "f",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "open -a 'Fantastical'" }
+          ]
+        },
+        {
+          "description": "cmd+ctrl+l → Things",
+          "type": "basic",
+          "from": {
+            "key_code": "l",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "open -a 'Things3'" }
+          ]
+        },
+        {
+          "description": "cmd+ctrl+m → Mail",
+          "type": "basic",
+          "from": {
+            "key_code": "m",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "open -a 'Mail'" }
+          ]
+        },
+        {
+          "description": "cmd+ctrl+d → Finder",
+          "type": "basic",
+          "from": {
+            "key_code": "d",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "open -a 'Finder'" }
+          ]
+        },
+        {
+          "description": "cmd+ctrl+i → iTerm2",
+          "type": "basic",
+          "from": {
+            "key_code": "i",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "open -a 'iTerm'" }
+          ]
+        },
+        {
+          "description": "cmd+ctrl+h → Window Hints (AltTab)",
+          "type": "basic",
+          "from": {
+            "key_code": "h",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "open -b 'com.lwouis.alt-tab-macos' || osascript -e 'tell application \"System Events\" to keystroke tab using command down'" }
+          ]
+        },
+        {
+          "description": "cmd+ctrl+g → Grid (not available)",
+          "type": "basic",
+          "from": {
+            "key_code": "g",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "osascript -e 'display notification \"Use position shortcuts instead\" with title \"yabai\"'" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Window Focus Direction (cmd+ctrl+arrows)",
+      "manipulators": [
+        {
+          "description": "cmd+ctrl+left → focus window left",
+          "type": "basic",
+          "from": {
+            "key_code": "left_arrow",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "/usr/local/bin/yabai -m window --focus west || /usr/local/bin/yabai -m display --focus west" }
+          ]
+        },
+        {
+          "description": "cmd+ctrl+right → focus window right",
+          "type": "basic",
+          "from": {
+            "key_code": "right_arrow",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "/usr/local/bin/yabai -m window --focus east || /usr/local/bin/yabai -m display --focus east" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Layouts (cmd+ctrl+F14/F15)",
+      "manipulators": [
+        {
+          "description": "cmd+ctrl+f14 → Apply 2monitors_left layout",
+          "type": "basic",
+          "from": {
+            "key_code": "f14",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/layouts/2monitors_left.sh" }
+          ]
+        },
+        {
+          "description": "cmd+ctrl+f15 → Apply 2monitors_right layout",
+          "type": "basic",
+          "from": {
+            "key_code": "f15",
+            "modifiers": { "mandatory": ["command", "control"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/layouts/2monitors_right.sh" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Snapshots (ctrl+alt+s/a)",
+      "manipulators": [
+        {
+          "description": "ctrl+alt+s → Save window snapshot",
+          "type": "basic",
+          "from": {
+            "key_code": "s",
+            "modifiers": { "mandatory": ["control", "option"] }
+          },
+          "to": [
+            { "shell_command": "/usr/local/bin/yabai -m query --windows > ~/.config/yabai/snapshot.json && osascript -e 'display notification \"Snapshot saved\" with title \"yabai\"'" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+a → Restore window snapshot",
+          "type": "basic",
+          "from": {
+            "key_code": "a",
+            "modifiers": { "mandatory": ["control", "option"] }
+          },
+          "to": [
+            { "shell_command": "~/.config/yabai/layouts/restore_snapshot.sh" }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "Move Window to Display (ctrl+alt+5/6/7)",
+      "manipulators": [
+        {
+          "description": "ctrl+alt+5 → move to display 1",
+          "type": "basic",
+          "from": {
+            "key_code": "5",
+            "modifiers": { "mandatory": ["control", "option"] }
+          },
+          "to": [
+            { "shell_command": "/usr/local/bin/yabai -m window --display 1; /usr/local/bin/yabai -m display --focus 1" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+6 → move to display 2",
+          "type": "basic",
+          "from": {
+            "key_code": "6",
+            "modifiers": { "mandatory": ["control", "option"] }
+          },
+          "to": [
+            { "shell_command": "/usr/local/bin/yabai -m window --display 2; /usr/local/bin/yabai -m display --focus 2" }
+          ]
+        },
+        {
+          "description": "ctrl+alt+7 → move to display 3",
+          "type": "basic",
+          "from": {
+            "key_code": "7",
+            "modifiers": { "mandatory": ["control", "option"] }
+          },
+          "to": [
+            { "shell_command": "/usr/local/bin/yabai -m window --display 3; /usr/local/bin/yabai -m display --focus 3" }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,315 @@
+{
+  "title": "Fine volume control (rev 3)",
+  "rules": [
+    {
+      "description": "Map volume controls to fine volume controls (Option + Shift + Volume)",
+      "available_since": "15.3.0",
+      "manipulators": [
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f11",
+            "modifiers": {
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_decrement",
+              "modifiers": [
+                "left_option",
+                "left_shift"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_unless",
+              "name": "system.use_fkeys_as_standard_function_keys",
+              "value": true
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f11",
+            "modifiers": {
+              "mandatory": [
+                "option",
+                "shift"
+              ],
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_decrement"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_unless",
+              "name": "system.use_fkeys_as_standard_function_keys",
+              "value": true
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f11",
+            "modifiers": {
+              "mandatory": [
+                "fn"
+              ],
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_decrement",
+              "modifiers": [
+                "left_option",
+                "left_shift"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "system.use_fkeys_as_standard_function_keys",
+              "value": true
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f11",
+            "modifiers": {
+              "mandatory": [
+                "option",
+                "shift",
+                "fn"
+              ],
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_decrement"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "system.use_fkeys_as_standard_function_keys",
+              "value": true
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "consumer_key_code": "volume_decrement",
+            "modifiers": {
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_decrement",
+              "modifiers": [
+                "left_option",
+                "left_shift"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "consumer_key_code": "volume_decrement",
+            "modifiers": {
+              "mandatory": [
+                "option",
+                "shift"
+              ],
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_decrement"
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f12",
+            "modifiers": {
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_increment",
+              "modifiers": [
+                "left_option",
+                "left_shift"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_unless",
+              "name": "system.use_fkeys_as_standard_function_keys",
+              "value": true
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f12",
+            "modifiers": {
+              "mandatory": [
+                "option",
+                "shift"
+              ],
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_increment"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_unless",
+              "name": "system.use_fkeys_as_standard_function_keys",
+              "value": true
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f12",
+            "modifiers": {
+              "mandatory": [
+                "fn"
+              ],
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_increment",
+              "modifiers": [
+                "left_option",
+                "left_shift"
+              ]
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "system.use_fkeys_as_standard_function_keys",
+              "value": true
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "key_code": "f12",
+            "modifiers": {
+              "mandatory": [
+                "option",
+                "shift",
+                "fn"
+              ],
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_increment"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "variable_if",
+              "name": "system.use_fkeys_as_standard_function_keys",
+              "value": true
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "consumer_key_code": "volume_increment",
+            "modifiers": {
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_increment",
+              "modifiers": [
+                "left_option",
+                "left_shift"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "basic",
+          "from": {
+            "consumer_key_code": "volume_increment",
+            "modifiers": {
+              "mandatory": [
+                "option",
+                "shift"
+              ],
+              "optional": [
+                "caps_lock"
+              ]
+            }
+          },
+          "to": [
+            {
+              "consumer_key_code": "volume_increment"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

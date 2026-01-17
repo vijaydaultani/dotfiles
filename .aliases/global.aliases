@@ -1,0 +1,123 @@
+# Pretty print paths
+alias epath="echo $PATH | tr -s ':' '\n'"
+alias elibpath="echo $LD_LIBRARY_PATH | tr -s ':' '\n'"
+
+# Configure opening all the dot files in chezmoi edit
+alias zshc="chezmoi edit $HOME/.zshrc"
+alias vimc="chezmoi edit $HOME/.vimrc"
+alias tmuxc="chezmoi edit $HOME/.tmux.conf"
+alias bashc="chezmoi edit $HOME/.bashrc"
+alias bashpc="chezmoi edit $HOME/.bash_profile"
+alias galiasc="chezmoi edit $HOME/.aliases/global.aliases"
+alias laliasc="chezmoi edit $HOME/.aliases/local.aliases"
+alias slatec="chezmoi edit $HOME/.slate"
+
+# Productivity
+alias szsh="source $HOME/.zshrc"
+alias sbash="source $HOME/.bashrc"
+
+# Print enviornment variables
+alias ecvd="echo $CUDA_VISIBLE_DEVICES"
+
+# Copy from within terminals only for Mac
+# alias pbcopy="xclip -selection clipboard"
+# alias pbpaste="xclip -selection clipboard -o"
+
+#----------------------------------------------------------------------
+# Write custom functions
+##----------------------------------------------------------------------
+
+scpremote() {
+    local remote="vijay@ganesha"
+    local dest="/tmp"
+    scp "$1" "${remote}:${dest}/" && echo "${dest}/$(basename "$1")" | pbcopy && echo "Copied to clipboard: ${dest}/$(basename "$1")"
+}
+
+# Print tab separated values on new line even with missing columns
+function trt () {
+    tr "\t" "\n" | nl -b a
+}
+
+# Get content from a specified line number from a long file
+function getline () {
+    head -n $1 $2 | tail -n 1
+}
+
+# Get output of previous command from stdout
+# Usage echo $lines
+function redirect () {
+  ol=("${(f@)$(cat)}")
+}
+
+# Function to view markdown in terminal
+rmd () {
+  pandoc $1 | lynx -stdin
+}
+
+# jp to en translation
+function jpen () {
+        trans -show-original y -show-original-phonetics n -show-translation y -show-translation-phonetics n -show-prompt-message n -show-languages n -show-original-dictionary N -show-dictionary n -show-alternatives n ja:en $1
+}
+
+# word to definition
+function definition () {
+    while IFS='' read -r word || [[ -n "$word" ]]; do
+        echo "Translating word : $word"
+        define --oxford-dictionary-app-id=f986234d --oxford-dictionary-app-key=35bb076d3a29db46dc5615361706ca28 $word
+    done < "$1"
+}
+
+# function to print in middle of screen
+mpt() {
+   clear ;
+   w=$(( `tput cols ` / 2 ));
+   h=$(( `tput lines` / 2 ));
+   tput cup $h;
+   printf "%${w}s \n"  "$1"; tput cup $h;
+   sleep 5;
+   clear;
+}
+
+# Get specific line content from a big file
+function getline () {
+    head -n $1 $2 | tail -n 1
+}
+
+# Get output of previous command from stdout
+# Usage echo $lines
+function redirect () {
+  ol=("${(f@)$(cat)}")
+}
+
+# Function to view markdown in terminal
+rmd () {
+  pandoc $1 | lynx -stdin
+}
+
+# single line to multiline
+function otml () {
+    echo $1 | sed 's/ / \\\n/g'
+}
+
+# count number of words in each line of file
+function cw () {
+    awk '{print NF}' $1
+}
+
+# download m3u8 file
+function download-playlist() {
+    if [[ -n "$1" ]]; then
+        touch ./files.txt;
+        counter=1;
+        while read line; do
+            if [[ "$line" == "http"* ]]; then
+                curl --silent -o ${counter}.mp4 "$line";
+                echo "file ${counter}.mp4" >> ./files.txt;
+                ((counter++));
+            fi;
+        done < "$1";
+        ffmpeg -f concat -safe 0 -i ./files.txt -codec copy output.mp4;
+    else
+        echo 'Usage: download-playlist <file.m3u8>';
+    fi
+}

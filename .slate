@@ -1,0 +1,330 @@
+# Configs
+config defaultToCurrentScreen true
+config defaultToCurrentScreen true
+config secondsBetweenRepeat 0.1
+config focusCheckWidthMax 3000
+config windowHintsShowIcons true
+config windowHintsIgnoreHiddenWindows false
+config windowHintsSpread true
+config windowHintsOrder persist
+
+# Monitor Aliases
+alias mac           0
+alias right-tall    2
+alias center-fat    1
+# alias mac-16        3072 × 1920
+# alias mac-15        2880 x 1800
+# alias lg-4k         3840 × 2160
+
+# Misc Aliases
+alias showNormalHint hint AOEUIDHTNSYXFBPKGMCW
+
+#----------------------------------------------------------------------
+# Application Aliases
+#----------------------------------------------------------------------
+alias agenda 'Agenda'
+alias finder 'Finder'
+alias safari 'Safari'
+alias spotify 'Spotify'
+alias chrome 'Google Chrome'
+alias terminal 'iTerm2'
+alias dash 'Dash'
+alias wunderlist 'Wunderlist'
+alias trello 'Trello'
+alias fantastical 'Fantastical'
+alias pdfexpert 'PDF Expert'
+alias bear 'Bear'
+alias reeder 'Reeder'
+alias todo 'Microsoft To Do'
+alias things 'Things'
+alias outlook 'Microsoft Outlook'
+alias mail 'Mail'
+alias thunder 'Thunderbird'
+alias whatsapp 'WhatsApp'
+alias slack 'Slack'
+alias viber 'Viber'
+alias teams 'Microsoft Teams'
+alias chime 'Amazon Chime'
+alias slack 'Slack'
+alias macdown 'MacDown'
+alias sublime 'Sublime Text'
+alias quip 'Quip'
+alias mendeley 'Mendeley Desktop'
+alias omni 'OmniPlan'
+alias bear 'Bear'
+
+#----------------------------------------------------------------------
+# Abstract positions
+# command format move topLeftX;topLeftY sizeX;sizeY screen
+#----------------------------------------------------------------------
+alias full          move screenOriginX;screenOriginY                                        screenSizeX;screenSizeY
+
+# For Wide Monitor
+#alias center       move screenOriginX+screenSizeX*0.35;screenOriginY+screenSizeY*0.07      screenSizeX*0.3;screenSizeY*0.6
+
+# For imac
+alias center        move screenOriginX+screenSizeX*0.20;screenOriginY+screenSizeY*0.07      screenSizeX*0.60;screenSizeY*0.6
+alias centerMiddle  move screenOriginX+screenSizeX*0.30;screenOriginY+screenSizeY*0.2       screenSizeX*0.40;screenSizeY*0.6
+alias leftHalf      move screenOriginX;screenOriginY                                        screenSizeX/2;screenSizeY
+alias rightHalf     move screenOriginX+screenSizeX/2;screenOriginY                          screenSizeX/2;screenSizeY
+alias topHalf       move screenOriginX;screenOriginY                                        screenSizeX;screenSizeY/2
+alias bottomHalf    move screenOriginX;screenOriginY+screenSizeY/2                          screenSizeX;screenSizeY/2
+alias fullScreen    move screenOriginX;screenOriginY                                        screenSizeX;screenSizeY
+
+alias oneThirdFirst      move screenOriginX;screenOriginY                                   screenSizeX*0.3333;screenSizeY
+alias oneThirdSecond     move screenOriginX+screenSizeX*0.3333;screenOriginY                screenSizeX*0.3333;screenSizeY
+alias oneThirdThird      move screenOriginX+screenSizeX*0.6667;screenOriginY                 screenSizeX*0.3333;screenSizeY
+
+
+alias leftTwoThird  move screenOriginX;screenOriginY                                        screenSizeX*0.6667;screenSizeY
+alias rightTwoThird move screenOriginX+screenSizeX*0.3334;screenOriginY                     screenSizeX*0.6667;screenSizeY
+
+alias leftMost      move screenOriginX;screenOriginY                                        screenSizeX*0.20;screenSizeY
+alias middle        move screenOriginX+screenSizeX*0.20;screenOriginY                       screenSizeX*0.60;screenSizeY
+alias rightMost     move screenOriginX+screenSizeX*0.80;screenOriginY                       screenSizeX*0.20;screenSizeY
+
+alias upperLeft     move screenOriginX;screenOriginY                                        screenSizeX*0.2;screenSizeY*0.5
+alias lowerLeft     move screenOriginX;screenOriginY+screenSizeY*0.5                        screenSizeX*0.2;screenSizeY*0.5
+alias upperRight    move screenOriginX+screenSizeX*0.8;screenOriginY                        screenSizeX*0.2;screenSizeY*0.5
+alias lowerRight    move screenOriginX+screenSizeX*0.8;screenOriginY+screenSizeY*0.5        screenSizeX*0.2;screenSizeY*0.5
+
+# Quarter positions (Spectacle-style: 50% width, 50% height)
+alias quarterTopLeft      move screenOriginX;screenOriginY                                  screenSizeX/2;screenSizeY/2
+alias quarterBottomLeft   move screenOriginX;screenOriginY+screenSizeY/2                    screenSizeX/2;screenSizeY/2
+alias quarterTopRight     move screenOriginX+screenSizeX/2;screenOriginY                    screenSizeX/2;screenSizeY/2
+alias quarterBottomRight  move screenOriginX+screenSizeX/2;screenOriginY+screenSizeY/2      screenSizeX/2;screenSizeY/2
+
+alias topCenter     move screenOriginX+screenSizeX/2-windowSizeX/2;screenOriginY+screenSizeY*0.1    windowSizeX;windowSizeY
+
+#----------------------------------------------------------------------
+# Concrete positions
+#----------------------------------------------------------------------
+alias 0-full            ${full}             ${mac}
+alias 1-full            ${full}             ${center-fat}
+alias 2-full            ${full}             ${right-tall}
+
+alias 0-left            ${leftHalf}         ${mac}
+alias 1-left            ${leftHalf}         ${center-fat}
+alias 2-left            ${leftHalf}         ${right-tall}
+
+alias 0-leftTwoThird    ${leftTwoThird}     ${mac}
+alias 1-leftTwoThird    ${leftTwoThird}     ${center-fat}
+alias 2-leftTwoThird    ${leftTwoThird}     ${right-tall}
+
+alias 0-rightTwoThird   ${rightTwoThird}    ${mac}
+alias 1-rightTwoThird   ${rightTwoThird}    ${center-fat}
+alias 2-rightTwoThird   ${rightTwoThird}    ${right-tall}
+
+alias 0-right           ${rightHalf}        ${mac}
+alias 1-right           ${rightHalf}        ${center-fat}
+alias 2-right           ${rightHalf}        ${right-tall}
+
+alias 0-center          ${center}           ${mac}
+alias 1-center          ${center}           ${center-fat}
+alias 2-center          ${center}           ${right-tall}
+
+alias 0-leftMost        ${leftMost}         ${mac}
+alias 0-middle          ${middle}           ${mac}
+alias 0-centerMiddle    ${centerMiddle}     ${mac}
+alias 0-rightMost       ${rightMost}        ${mac}
+alias 1-leftMost        ${leftMost}         ${center-fat}
+alias 1-middle          ${middle}           ${center-fat}
+alias 1-centerMiddle    ${centerMiddle}     ${center-fat}
+alias 1-rightMost       ${rightMost}        ${center-fat}
+
+alias 0-upperLeft       ${upperLeft}        ${mac}
+alias 0-lowerLeft       ${lowerLeft}        ${mac}
+alias 0-upperRight      ${upperRight}       ${mac}
+alias 0-lowerRight      ${lowerRight}       ${mac}
+alias 2-upperLeft       ${upperLeft}        ${center-fat}
+alias 2-lowerLeft       ${lowerLeft}        ${center-fat}
+alias 2-upperRight      ${upperRight}       ${center-fat}
+alias 2-lowerRight      ${lowerRight}       ${center-fat}
+
+alias 0-topCenter       ${topCenter}        ${mac}
+alias 1-topCenter       ${topCenter}        ${center-fat}
+
+#----------------------------------------------------------------------
+# Monitor Layouts - Fixing application locations
+#----------------------------------------------------------------------
+layout office_setup ${finder}        ${2-lowerRight}
+layout office_setup ${agenda}        ${2-lowerLeft}
+layout office_setup ${spotify}       ${0-full}
+layout office_setup ${chrome}        ${1-middle}
+layout office_setup ${quip}          ${1-leftMost}
+layout office_setup ${pdfexpert}     ${0-center}
+layout office_setup ${terminal}      ${1-full}
+layout office_setup ${trello}        ${0-full}
+layout office_setup ${dash}          ${1-full}
+layout office_setup ${mendeley}      ${1-full}
+layout office_setup ${wunderlist}    ${2-upperLeft}
+layout office_setup ${todo}          ${2-upperLeft}
+layout office_setup ${things}        ${2-upperLeft}
+layout office_setup ${fantastical}   ${2-upperRight}
+layout office_setup ${reeder}        ${1-full}
+layout office_setup ${thunder}       ${1-middle}
+layout office_setup ${mail}          ${1-middle}
+layout office_setup ${outlook}       ${1-middle}
+layout office_setup ${whatsapp}      ${0-full}
+layout office_setup ${viber}         ${0-full}
+layout office_setup ${teams}         ${0-full}
+layout office_setup ${slack}         ${0-full}
+layout office_setup ${macdown}       ${1-middle}
+layout office_setup ${sublime}       ${2-lowerLeft}
+layout office_setup ${bear}          ${2-lowerRight}
+layout office_setup ${safari}        ${1-middle}
+layout office_setup ${omni}          ${1-middle}
+
+
+layout home_setup ${finder}        ${0-lowerRight}
+layout home_setup ${agenda}        ${0-lowerLeft}
+layout home_setup ${spotify}       ${0-lowerRight}
+layout home_setup ${chrome}        ${0-middle}
+layout home_setup ${quip}          ${0-leftMost}
+layout home_setup ${pdfexpert}     ${1-center}
+layout home_setup ${terminal}      ${0-full}
+layout home_setup ${trello}        ${1-full}
+layout home_setup ${dash}          ${0-full}
+layout home_setup ${mendeley}      ${0-full}
+layout home_setup ${wunderlist}    ${0-upperLeft}
+layout home_setup ${todo}          ${0-upperLeft}
+layout home_setup ${things}        ${0-upperLeft}
+layout home_setup ${fantastical}   ${0-upperRight}
+layout home_setup ${reeder}        ${0-full}
+layout home_setup ${thunder}       ${0-middle}
+layout home_setup ${mail}          ${0-middle}
+layout home_setup ${outlook}       ${0-middle}
+layout home_setup ${whatsapp}      ${1-full}
+layout home_setup ${viber}         ${0-upperLeft}
+layout home_setup ${teams}         ${0-lowerLeft}
+layout home_setup ${slack}         ${1-full}
+layout home_setup ${macdown}       ${0-middle}
+layout home_setup ${sublime}       ${0-lowerLeft}
+layout home_setup ${bear}          ${0-lowerRight}
+layout home_setup ${safari}        ${0-middle}
+layout home_setup ${omni}          ${0-middle}
+
+# Default Layouts
+# default 3monitors   resolutions:${center-fat};${right-tall};${mac};
+# default 2monitors   resolutions:${mac};${center-fat};
+# default 1monitor    resolutions:${mac}
+
+#----------------------------------------------------------------------
+# snapshot settings
+#----------------------------------------------------------------------
+# save the snapshot with name slateCurrentSnapshot
+bind s:ctrl,alt snapshot slateCurrentSnapshot save-to-disk;stack
+
+# activate the snapshot from the stack and delete it
+bind a:ctrl,alt activate-snapshot slateCurrentSnapshot delete
+
+#----------------------------------------------------------------------
+# key binding for moving apps on certain position
+#----------------------------------------------------------------------
+alias hyper-pos-1 ctrl;alt;shift
+alias hyper-pos-2 ctrl;alt;shift;cmd
+alias hyper-pos-3 ctrl;shift;alt
+alias hyper-pos-4 ctrl;alt
+alias hyper-pos-5 ctrl;alt;cmd
+
+#bind b:${hyper-pos-1}    ${wideCenter}
+bind h:${hyper-pos-1}     ${middle}
+bind f:${hyper-pos-1}     ${leftMost}
+bind j:${hyper-pos-1}     ${rightMost}
+bind g:${hyper-pos-1}     ${centerMiddle}
+bind t:${hyper-pos-1}     ${topCenter}
+bind a:${hyper-pos-1}     ${leftTwoThird}
+bind l:${hyper-pos-1}     ${rightTwoThird}
+
+# bind h:${hyper-pos-2}     ${1-middle}
+# bind f:${hyper-pos-2}     ${1-leftMost}
+# bind j:${hyper-pos-2}     ${1-rightMost}
+# bind g:${hyper-pos-2}     ${1-centerMiddle}
+# bind t:${hyper-pos-2}     ${1-topCenter}
+# bind a:${hyper-pos-2}     ${1-leftTwoThird}
+# bind l:${hyper-pos-2}     ${1-rightTwoThird}
+
+bind right:${hyper-pos-4}       throw previous resize
+bind left:${hyper-pos-4}        throw next resize
+
+# Quarter positions (Spectacle-style)
+bind 1:${hyper-pos-3}        ${quarterTopLeft}
+bind 2:${hyper-pos-3}        ${quarterBottomLeft}
+bind 3:${hyper-pos-3}        ${quarterTopRight}
+bind 4:${hyper-pos-3}        ${quarterBottomRight}
+
+# Cycling thirds (Spectacle's MoveToNextThird / MoveToPreviousThird)
+bind right:${hyper-pos-3}    chain ${oneThirdFirst} | ${oneThirdSecond} | ${oneThirdThird}
+bind left:${hyper-pos-3}     chain ${oneThirdThird} | ${oneThirdSecond} | ${oneThirdFirst}
+
+# Fullscreen (Spectacle's MoveToFullscreen)
+bind m:${hyper-pos-3}        ${fullScreen}
+
+# Resize window (Spectacle's MakeLarger / MakeSmaller)
+bind up:${hyper-pos-3}       resize +10% +10%
+bind down:${hyper-pos-3}     resize -10% -10%
+
+# Undo last move (Spectacle's UndoLastMove)
+bind z:alt;cmd               undo
+
+bind left:${hyper-pos-5}        ${leftHalf}
+bind right:${hyper-pos-5}       ${rightHalf}
+bind up:${hyper-pos-5}          ${topHalf}
+bind down:${hyper-pos-5}        ${bottomHalf}
+
+# bind m:${hyper-pos-1}           ${fullScreen}
+bind c:${hyper-pos-1}           ${center}
+
+# 4 corners key bindings
+bind home:${hyper-pos-1}          ${upperLeft}
+bind end:${hyper-pos-1}           ${lowerLeft}
+bind pageUp:${hyper-pos-1}        ${upperRight}
+bind pageDown:${hyper-pos-1}      ${lowerRight}
+
+# bind home:${hyper-pos-2}          ${0-upperLeft}
+# bind end:${hyper-pos-2}           ${0-lowerLeft}
+# bind pageUp:${hyper-pos-2}        ${0-upperRight}
+# bind pageDown:${hyper-pos-2}      ${0-lowerRight}
+
+#----------------------------------------------------------------------
+# key binding to focus on apps
+#----------------------------------------------------------------------
+alias hyper-app cmd;ctrl
+
+# Activate 2monitors layout
+bind f14:${hyper-app} layout office_setup
+bind f15:${hyper-app} layout home_setup
+
+# show suggestions
+bind h:${hyper-app} ${showNormalHint}
+bind g:${hyper-app} grid padding:5 0:3,3 1:4,4 2:3,4
+
+# App bindings
+# f with finder creates error with full screen shortcut
+bind t:${hyper-app}     focus ${teams}
+bind s:${hyper-app}     focus ${spotify}
+bind c:${hyper-app}     focus ${chrome}
+bind f:${hyper-app}     focus ${fantastical}
+bind l:${hyper-app}     focus ${things}
+bind m:${hyper-app}     focus ${mail}
+bind d:${hyper-app}     focus ${finder}
+bind i:${hyper-app}     focus ${terminal}
+
+# Focus Bindings
+bind right:${hyper-app}    focus right
+bind left:${hyper-app}     focus left
+
+#----------------------------------------------------------------------
+# full screen hacks
+#----------------------------------------------------------------------
+# full screen
+# alias full_screen sequence shell wait path:~/local/bin '/usr/bin/osascript -l AppleScript makeFullScreen.scpt'
+
+#----------------------------------------------------------------------
+# Not used aliases
+#----------------------------------------------------------------------
+# alias wideCenter    move screenOriginX+(screenSizeX/2-(screenSizeX*0.4));screenOriginY+(screenSizeY/2-(screenSizeY*0.4))  screenSizeX*0.8;screenSizeY*0.8
+
+#----------------------------------------------------------------------
+# End
+#----------------------------------------------------------------------
