@@ -1,0 +1,335 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#===================================================================
+# macOS variant (pbcopy-remote clipboard). See Linux branch below.
+#===================================================================
+#!/bin/zsh
+#tmux version 2.2
+
+# 0 is too far from ` ;)
+set -g base-index 1
+set -g pane-base-index 1
+
+# Reload tmux config
+bind r source-file $HOME/.tmux.conf
+
+# prefix binding key
+unbind C-b
+set -g prefix `
+bind-key ` send-prefix
+
+# vertical and horizontal panes
+unbind %
+bind v split-window -h
+unbind '"'
+bind h split-window -v
+
+# clear the scrollback buffer
+bind -n C-k send-keys -R \; clear-history
+
+# increase the scrollback size
+# default value is 2000
+# https://stackoverflow.com/questions/18760281/how-to-increase-scrollback-buffer-size-in-tmux
+set-option -g history-limit 3000
+
+# copy and paste to/from osx
+bind C-c run "tmux save-buffer - | pbcopy-remote"
+bind C-v run "tmux set-buffer $(pbpaste-remote); tmux paste-buffer"
+
+# change the key bindings to vi for copy mode so to use j, k, l, h
+setw -g mode-keys vi
+
+# Use Alt-vim keys without prefix key to switch panes
+#bind -n M-h select-pane -L
+#bind -n M-j select-pane -D
+#bind -n M-k select-pane -U
+#bind -n M-l select-pane -R
+
+# Use Alt-arrow keys without prefix key to switch panes
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# don't allow to rename the name of the window
+set-option -g allow-rename off
+
+# vim resize panel
+bind < resize-pane -L 1
+bind > resize-pane -R 1
+
+# For using 256 color terminal in tmux
+set -g default-terminal "screen-256color"
+
+# Pane border
+set -g pane-border-style fg=colour238
+set -g pane-active-border-style fg=colour51
+
+# Make zsh my default shell for tmux sessions
+set-option -g default-shell $SHELL
+
+# powerline status bar
+set-option -g status on
+set-option -g status-interval 2
+set-option -g status-justify "centre"
+set-option -g status-left-length 60
+set-option -g status-right-length 90
+set-option -g status-left "#($HOME/.tmux/plugins/tmux-powerline/powerline.sh left)"
+set-option -g status-right "#($HOME/.tmux/plugins/tmux-powerline/powerline.sh right)"
+
+# https://superuser.com/questions/880497/how-do-i-resize-the-usable-area-of-a-tmux-session
+# aggresive resize
+setw -g aggressive-resize on
+
+# easily toggle synchronization (mnemonic: e is for echo)
+# sends input to all panes in a given window.
+bind e setw synchronize-panes on
+bind E setw synchronize-panes off
+
+# Highlight bell when some process has finished in non current window
+# https://stackoverflow.com/questions/23755063/alert-in-tmux-when-a-process-completes
+# Usage: $ some-command; echo -e '\a'
+set-window-option -g visual-bell on
+set-window-option -g bell-action other
+
+#----------------------------------------------------------------------
+# List of plugins to install
+# Hit prefix + I to fetch and source the plugin
+#----------------------------------------------------------------------
+set -g @plugin 'tmux-plugins/tpm'
+# Able to resurrect the tmux session on machine crash 
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+# Being able to store the tmux session autmatically
+set -g @plugin 'tmux-plugins/tmux-continuum'
+# Copy to the system clipboard in tmux
+set -g @plugin 'tmux-plugins/tmux-yank'
+
+#----------------------------------------------------------------------
+# Plugins settings
+#----------------------------------------------------------------------
+# Last saved enviornment is automatically restored when tmux is started
+set -g @continuum-restore 'on'
+
+#----------------------------------------------------------------------
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+#----------------------------------------------------------------------# 
+run '$HOME/.tmux/plugins/tpm/tpm'
+{{- else -}}
+#===================================================================
+# Linux variant (xclip clipboard, tmux-fzf, Rosé Pine, easy-motion).
+#===================================================================
+#!/bin/zsh
+#tmux version 2.2
+
+# 0 is too far from ` ;)
+set -g base-index 1
+set -g pane-base-index 1
+set-option -g renumber-windows on
+
+# Reload tmux config
+bind r source-file /home/vijay/.tmux.conf \; display-message "Config reloaded!"
+bind R movew -r \; display-message "Windows renumbered!"
+
+# prefix binding key
+unbind C-b
+set -g prefix `
+bind-key ` send-prefix
+
+# vertical and horizontal panes
+unbind %
+bind v split-window -h
+unbind '"'
+bind h split-window -v
+
+# clear the scrollback buffer
+bind -n C-k send-keys -R \; clear-history
+
+# increase the scrollback size
+# default value is 2000
+# https://stackoverflow.com/questions/18760281/how-to-increase-scrollback-buffer-size-in-tmux
+set-option -g history-limit 3000
+
+# change the key bindings to vi for copy mode so to use j, k, l, h
+setw -g mode-keys vi
+
+# Use Alt-vim keys without prefix key to switch panes
+#bind -n M-h select-pane -L
+#bind -n M-j select-pane -D
+#bind -n M-k select-pane -U
+#bind -n M-l select-pane -R
+
+# Use Alt-arrow keys without prefix key to switch panes
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# don't allow to rename the name of the window
+set-option -g allow-rename off
+
+# vim resize panel
+bind < resize-pane -L 1
+bind > resize-pane -R 1
+
+# For using 256 color terminal in tmux
+set -g default-terminal "screen-256color"
+
+# Forward clipboard over SSH via OSC 52 escape sequence.
+# Makes `y` in remote tmux push to the LOCAL Mac clipboard, so cmd+v pastes
+# the joined-line (-J) version instead of the visually-wrapped terminal selection.
+# Terminal must allow clipboard write (iTerm2: Settings → General → Selection →
+# "Applications in terminal may access clipboard"; Ghostty/kitty/WezTerm: on by default).
+set -g set-clipboard on
+set -as terminal-features ',xterm*:clipboard'
+set -as terminal-features ',screen*:clipboard'
+
+#----------------------------------------------------------------------
+# Pane border / name display
+# Set directly (not via a client-attached hook): these are pure display
+# options with no plugin dependency, so sourcing them at server start is
+# deterministic. The old hook approach raced hook-registration against the
+# first attach and silently left the border bar "off" after a server restart.
+#----------------------------------------------------------------------
+set -g pane-border-lines heavy
+set -g pane-border-style fg=#6e6a86
+set -g pane-active-border-style fg=colour51
+set -g pane-border-status top
+set -g pane-border-format '#{?pane_active,#[fg=colour51],#[fg=#eb6f92]} #{pane_index}: #{@pane_name}#[default]'
+bind T command-prompt -p "Pane name:" 'set-option -p @pane_name "%%"'
+
+# Make zsh my default shell for tmux sessions
+set-option -g default-shell $SHELL
+
+# powerline status bar
+set-option -g status on
+set-option -g status-interval 2
+set-option -g status-justify "centre"
+set-option -g status-left-length 60
+set-option -g status-right-length 90
+set-option -g status-left "#($HOME/.tmux/plugins/tmux-powerline/powerline.sh left)"
+set-option -g status-right "#($HOME/.tmux/plugins/tmux-powerline/powerline.sh right)"
+
+# Highlight the active window in the centre window-list so it stands out
+# against the other 7 inactive windows. The pink pill uses Nerd-Font
+# half-circle separators (U+E0B6 left, U+E0B4 right) for rounded edges —
+# the inactive status-bar bg (status-style) shows through the cap cells.
+# Half-cell block edges (U+2590 ▐ / U+258C ▌) — pure Unicode, works without
+# Nerd-Font powerline-extra glyphs. Visually approximates a soft pill edge.
+set-window-option -g window-status-current-format "#[fg=#D6BAFD,bg=default]▐#[fg=#1a1a1a,bg=#D6BAFD,bold]#I:#W#[fg=#D6BAFD,bg=default]▌"
+
+# https://superuser.com/questions/880497/how-do-i-resize-the-usable-area-of-a-tmux-session
+# aggresive resize
+setw -g aggressive-resize on
+
+# easily toggle synchronization (mnemonic: e is for echo)
+# sends input to all panes in a given window.
+bind e setw synchronize-panes on
+bind E setw synchronize-panes off
+
+# Highlight bell when some process has finished in non current window
+# https://stackoverflow.com/questions/23755063/alert-in-tmux-when-a-process-completes
+# Usage: $ some-command; echo -e '\a'
+set-window-option -g visual-bell on
+set-window-option -g bell-action other
+
+#----------------------------------------------------------------------
+# List of plugins to install
+# Hit prefix + I to fetch and source the plugin
+#----------------------------------------------------------------------
+set -g @plugin 'tmux-plugins/tpm'
+# Able to resurrect the tmux session on machine crash 
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+# Being able to store the tmux session autmatically
+set -g @plugin 'tmux-plugins/tmux-continuum'
+# Copy to the system clipboard in tmux
+set -g @plugin 'tmux-plugins/tmux-yank'
+# vim-easymotion-style jumps: word/2-char/single-char motions with hint labels.
+# Activate with prefix + Space, then a motion (w/b/e/f/F/s/...), then hint letters.
+set -g @plugin 'IngoMeyer441/tmux-easy-motion'
+# fzf-driven menu over tmux objects (sessions, windows, panes, keybindings,
+# clipboard, processes). Activate with prefix + F. Requires fzf (installed).
+set -g @plugin 'sainnhe/tmux-fzf'
+
+#----------------------------------------------------------------------
+# Plugins settings
+#----------------------------------------------------------------------
+# Last saved enviornment is automatically restored when tmux is started
+set -g @continuum-restore 'on'
+
+# Persist per-pane @pane_name across server restarts. resurrect doesn't save
+# custom @-user-options, so hook our own save/restore onto its lifecycle:
+# post-save-all dumps names, post-restore-all re-applies them once panes exist.
+set -g @resurrect-hook-post-save-all 'sh ~/.tmux/resurrect-save-pane-names.sh'
+set -g @resurrect-hook-post-restore-all 'sh ~/.tmux/resurrect-restore-pane-names.sh'
+
+# Force tmux-yank to use xclip on Linux instead of falling back to a pbcopy alias
+set -g @override_copy_command 'xclip -selection clipboard'
+
+# tmux-easy-motion: activate with prefix + \  (instead of the default Space).
+# Disable all default motions and only bind w / W / l (line) — all bidirectional.
+set -g @easy-motion-prefix "\\"
+set -g @easy-motion-default-key-bindings 'off'
+set -g @easy-motion-binding-bd-w 'w'   # prefix + \ + w  → jump to any word (above or below)
+set -g @easy-motion-binding-bd-W 'W'   # prefix + \ + W  → jump to any WORD (whitespace-delimited)
+set -g @easy-motion-binding-bd-j 'l'   # prefix + \ + l  → jump to any line
+
+#----------------------------------------------------------------------
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+#----------------------------------------------------------------------# 
+run '$HOME/.tmux/plugins/tpm/tpm'
+
+#----------------------------------------------------------------------
+# Overrides — must come AFTER plugins so they win the binding fight
+#----------------------------------------------------------------------
+# vim-style selection in copy-mode: v begins selection, y yanks to clipboard.
+# (C-v stays bound to rectangle-toggle by default for block selection.)
+# -J on copy-pipe-and-cancel joins soft-wrapped lines so long commands paste
+# as a single line instead of carrying tmux's display-time line breaks.
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel -J "xclip -selection clipboard"
+bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel -J "xclip -selection clipboard"
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel -J "xclip -selection clipboard"
+
+# prefix+Y: enter copy-mode at the last line of output and start line-wise selection.
+# Extend with Up/k/PageUp, finish with y. Designed for quickly grabbing command output.
+bind Y copy-mode \; send-keys -X cursor-up \; send-keys -X select-line
+
+# prefix+p pastes the most recent tmux buffer (overrides default `previous-window`).
+# Default `prefix+]` still works too.
+unbind p
+bind p paste-buffer
+
+# tmux-fzf direct pickers (bypass the prefix+F menu):
+#   prefix + g  → fuzzy "go to pane"  (across all sessions/windows)
+#   prefix + w  → fuzzy window switcher (replaces default choose-tree)
+# The `switch` arg skips tmux-fzf's action submenu (switch/link/move/swap/…) and
+# jumps straight to the target list. Bound here in Overrides so prefix+w wins
+# over tmux's built-in choose-tree.
+bind g run-shell -b '$HOME/.tmux/plugins/tmux-fzf/scripts/pane.sh switch'
+bind w run-shell -b '$HOME/.tmux/plugins/tmux-fzf/scripts/window.sh switch'
+
+# Restore prefix+Space → next-layout. tmux-easy-motion grabbed Space on its first
+# load; relocating its prefix to "\" doesn't unbind the old Space binding, so do
+# it explicitly here and rebind to the default action.
+unbind-key -T prefix Space
+bind-key Space next-layout
+
+# prefix+P pastes a FLATTENED copy: every newline in the buffer is replaced with
+# a space. Useful when -J's "preserve real newlines" behavior breaks the paste
+# (e.g. multi-line shell with $(...) | ... '...' contexts where zsh redraws PS2).
+# Uses a throwaway named buffer ("flat") that's deleted right after, so prefix+p
+# still pastes the original unmodified buffer.
+bind P run-shell 'tmux save-buffer - | tr "\n" " " | tmux load-buffer -b flat - ; tmux paste-buffer -b flat -d'
+
+#----------------------------------------------------------------------
+# Rosé Pine "main" palette applied to tmux's own style options.
+# Powerline still drives status-left/right content; this just colors
+# the underlying bar, borders, message bar, and mode indicators.
+#  base=#191724  surface=#1f1d2e  overlay=#26233a  muted=#6e6a86
+#  subtle=#908caa  text=#e0def4  love=#eb6f92  iris=#c4a7e7
+#----------------------------------------------------------------------
+set-option -g status-style          "bg=#191724,fg=#e0def4"
+set-option -g window-status-style   "bg=#191724,fg=#908caa"
+set-option -g message-style         "bg=#26233a,fg=#e0def4"
+set-option -g message-command-style "bg=#26233a,fg=#e0def4"
+set-window-option -g mode-style     "bg=colour250,fg=colour16"
+{{- end }}
