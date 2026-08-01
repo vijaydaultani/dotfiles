@@ -439,9 +439,13 @@ set-option -g message-style         "bg=#26233a,fg=#e0def4"
 set-option -g message-command-style "bg=#26233a,fg=#e0def4"
 # Also the copy-mode cursorline highlight (see the `h` toggle above) — tmux has
 # a single mode-style, so the cursorline and a normal `v` selection necessarily
-# share it. White text rather than the palette's #e0def4: on this background
-# white gives 5.5:1 contrast vs 4.2:1, and this bar exists to be read through.
-# On a non-RGB terminal (currently screen-256color) tmux approximates the
-# background to colour61 / #5F5FAF, which is indistinguishable.
-set-window-option -g mode-style     "bg=#5F5FB5,fg=#FFFFFF"
+# share it. White on this near-black teal measures 13:1 contrast, well past the
+# 4.5:1 readability threshold; the palette's #e0def4 would also work here (9.9:1)
+# if theme coherence is preferred over maximum legibility.
+# Rendered exactly wherever the client advertises the RGB terminal feature (it
+# does here). A client without RGB falls back to the nearest 256-colour entry,
+# which for this value is gray 235 / #262626 — the teal is lost, not merely
+# approximated, so check `#{client_termfeatures}` before assuming it looks right
+# on a new terminal.
+set-window-option -g mode-style     "bg=#073642,fg=#FFFFFF"
 {{- end }}
