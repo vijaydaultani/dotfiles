@@ -66,9 +66,9 @@ let Tlist_WinWidth = 40
 " Plugin - Tabbar
 nmap <Leader>t :TagbarToggle<CR>
 
-" Toggle Paste mode
-" set pastetoggle=<Leader>p
-:nnoremap <Leader>p :set invpaste<CR>
+" Toggle paste mode with <Leader>p
+:nnoremap <Leader>p :set invpaste paste?<CR>
+set showmode
 
 " Relative line numbers
 map <Leader>r :set relativenumber!
