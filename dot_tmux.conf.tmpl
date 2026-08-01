@@ -343,6 +343,56 @@ bind-key -T copy-mode-z  t send-keys -X scroll-top
 bind-key -T copy-mode-z  z send-keys -X scroll-middle
 bind-key -T copy-mode-z  b send-keys -X scroll-bottom
 
+# vim-style `cursorline` for copy-mode, toggled with `c` (vim uses <Leader>b,
+# but `\` is easy-motion's copy-mode prefix and `b` is previous-word, so the
+# nearest free mnemonic key is used instead).
+#
+# tmux has no cursorline option, and it cannot be faked with styles: the
+# copy-mode highlight is a client-side overlay, not a cell attribute, so the
+# only way to tint a whole line is to genuinely select it. `select-line`
+# highlights exactly the cursor's line, but any following motion EXTENDS that
+# selection — it is vim's visual-line mode — so every motion must re-anchor with
+# clear-selection + select-line. The highlight uses mode-style, same as a normal
+# selection.
+#
+# State lives in @cursorline so the motion bindings stay inert (a plain send -X)
+# while the feature is off. Horizontal and word motions are deliberately not
+# wrapped: they can only ever re-select the line you are already on. Motions not
+# listed below (e.g. `w`, `{`, `}`) will extend the highlight while it is on;
+# any listed motion re-anchors it.
+#
+# Side effect worth knowing: while this is on there is a real selection, so `y`
+# yanks the highlighted line. Toggle it off before making a manual `v` selection.
+set -g @cursorline 0
+
+bind-key -T copy-mode-vi c if -F '#{@cursorline}' \
+    'set -g @cursorline 0 ; send -X clear-selection' \
+    'set -g @cursorline 1 ; send -X select-line'
+
+bind-key -T copy-mode-vi j        if -F '#{@cursorline}' 'send -X cursor-down    ; send -X clear-selection ; send -X select-line' 'send -X cursor-down'
+bind-key -T copy-mode-vi k        if -F '#{@cursorline}' 'send -X cursor-up      ; send -X clear-selection ; send -X select-line' 'send -X cursor-up'
+bind-key -T copy-mode-vi Down     if -F '#{@cursorline}' 'send -X cursor-down    ; send -X clear-selection ; send -X select-line' 'send -X cursor-down'
+bind-key -T copy-mode-vi Up       if -F '#{@cursorline}' 'send -X cursor-up      ; send -X clear-selection ; send -X select-line' 'send -X cursor-up'
+bind-key -T copy-mode-vi C-d      if -F '#{@cursorline}' 'send -X halfpage-down  ; send -X clear-selection ; send -X select-line' 'send -X halfpage-down'
+bind-key -T copy-mode-vi C-u      if -F '#{@cursorline}' 'send -X halfpage-up    ; send -X clear-selection ; send -X select-line' 'send -X halfpage-up'
+bind-key -T copy-mode-vi C-f      if -F '#{@cursorline}' 'send -X page-down      ; send -X clear-selection ; send -X select-line' 'send -X page-down'
+bind-key -T copy-mode-vi C-b      if -F '#{@cursorline}' 'send -X page-up        ; send -X clear-selection ; send -X select-line' 'send -X page-up'
+bind-key -T copy-mode-vi PageDown if -F '#{@cursorline}' 'send -X page-down      ; send -X clear-selection ; send -X select-line' 'send -X page-down'
+bind-key -T copy-mode-vi PageUp   if -F '#{@cursorline}' 'send -X page-up        ; send -X clear-selection ; send -X select-line' 'send -X page-up'
+bind-key -T copy-mode-vi G        if -F '#{@cursorline}' 'send -X history-bottom ; send -X clear-selection ; send -X select-line' 'send -X history-bottom'
+bind-key -T copy-mode-vi H        if -F '#{@cursorline}' 'send -X top-line       ; send -X clear-selection ; send -X select-line' 'send -X top-line'
+bind-key -T copy-mode-vi M        if -F '#{@cursorline}' 'send -X middle-line    ; send -X clear-selection ; send -X select-line' 'send -X middle-line'
+bind-key -T copy-mode-vi L        if -F '#{@cursorline}' 'send -X bottom-line    ; send -X clear-selection ; send -X select-line' 'send -X bottom-line'
+bind-key -T copy-mode-vi n        if -F '#{@cursorline}' 'send -X search-again   ; send -X clear-selection ; send -X select-line' 'send -X search-again'
+bind-key -T copy-mode-vi N        if -F '#{@cursorline}' 'send -X search-reverse ; send -X clear-selection ; send -X select-line' 'send -X search-reverse'
+
+# Leaving copy-mode must not leave @cursorline set, or the next copy-mode
+# session starts with the motion bindings re-anchoring a selection that was
+# never made. Both keep their stock action — q cancels, Escape only clears the
+# selection (in vi mode Escape does NOT exit copy-mode) — and just reset the flag.
+bind-key -T copy-mode-vi q      set -g @cursorline 0 \; send -X cancel
+bind-key -T copy-mode-vi Escape set -g @cursorline 0 \; send -X clear-selection
+
 # prefix+Y: enter copy-mode at the last line of output and start line-wise selection.
 # Extend with Up/k/PageUp, finish with y. Designed for quickly grabbing command output.
 bind Y copy-mode \; send-keys -X cursor-up \; send-keys -X select-line
