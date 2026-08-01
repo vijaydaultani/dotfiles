@@ -250,7 +250,18 @@ set -g @plugin 'tmux-plugins/tmux-continuum'
 set -g @plugin 'tmux-plugins/tmux-yank'
 # vim-easymotion-style jumps: word/2-char/single-char motions with hint labels.
 # Activate with prefix + Space, then a motion (w/b/e/f/F/s/...), then hint letters.
-set -g @plugin 'IngoMeyer441/tmux-easy-motion'
+# Our fork's `patched` branch = upstream master plus two local bug fixes that
+# are not upstream. TPM reads the part after `#` as the branch to clone.
+#   1. Jump targets are computed in Unicode code points but handed to tmux as
+#      screen cell columns, so any line containing a double-width character
+#      (CJK, emoji) placed the cursor short — measured 10 columns off.
+#   2. The hint overlay is rendered in a full-size window and swapped into the
+#      target pane; for a split pane that swap resizes it and discards the copy
+#      mode scroll offset, so jumps taken while scrolled into the history landed
+#      off by the scroll delta.
+# Re-base `patched` on upstream master when syncing the fork; if these ever land
+# upstream, drop the `#patched` suffix and point back at IngoMeyer441.
+set -g @plugin 'vijaydaultani/tmux-easy-motion#patched'
 # fzf-driven menu over tmux objects (sessions, windows, panes, keybindings,
 # clipboard, processes). Activate with prefix + F. Requires fzf (installed).
 set -g @plugin 'sainnhe/tmux-fzf'
