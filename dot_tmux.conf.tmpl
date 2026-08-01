@@ -182,6 +182,12 @@ set -g set-clipboard on
 set -as terminal-features ',xterm*:clipboard'
 set -as terminal-features ',screen*:clipboard'
 
+# Extended keys: let modifier combos like Ctrl+Shift+W survive to the application
+# instead of collapsing to Ctrl+W. tmux negotiates CSI-u reporting with the outer
+# terminal (iTerm2 supports it); needed to bind Ctrl+Shift+W to forward-kill-word.
+set -s extended-keys on
+set -as terminal-features ',xterm*:extkeys'
+
 #----------------------------------------------------------------------
 # Pane border / name display
 # Set directly (not via a client-attached hook): these are pure display
@@ -272,6 +278,13 @@ set -g @easy-motion-binding-bd-w 'w'   # prefix + \ + w  → jump to any word (a
 set -g @easy-motion-binding-bd-W 'W'   # prefix + \ + W  → jump to any WORD (whitespace-delimited)
 set -g @easy-motion-binding-bd-j 'l'   # prefix + \ + l  → jump to any line
 
+# tmux-fzf: in the pane switcher (prefix + g), show our custom @pane_name — the
+# title set via prefix + T — instead of the default [window_name:pane_title].
+# Panes without a name fall back to their running command (e.g. zsh, htop).
+# NOTE: tmux-fzf reads this from the server environment, so use set-environment
+# (not set -g @...); run-shell-spawned scripts inherit the global env.
+set-environment -g TMUX_FZF_PANE_FORMAT '#{?#{@pane_name},#{@pane_name},#{pane_current_command}}'
+
 #----------------------------------------------------------------------
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 #----------------------------------------------------------------------# 
@@ -288,6 +301,36 @@ bind-key -T copy-mode-vi v send-keys -X begin-selection
 bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel -J "xclip -selection clipboard"
 bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel -J "xclip -selection clipboard"
 bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel -J "xclip -selection clipboard"
+
+# vim-style zt / zz / zb in copy-mode: scroll the viewport so the cursor's line
+# sits at the top / centre / bottom of the pane, without moving the cursor off
+# the line (or column) it was on.
+#
+# No helper script and no #{copy_cursor_y} arithmetic is needed: tmux 3.4 already
+# ships the exact primitives as native copy-mode commands. Note also that
+# scroll-up / scroll-down are the WRONG building blocks here — they pin the
+# cursor to its screen row and slide the content underneath it, so a hand-rolled
+# "scroll by N" implementation silently lands the cursor on a different line.
+#
+# Two-key sequences need a sub key-table: `z` parks the client in copy-mode-z for
+# exactly ONE keypress, after which tmux reverts to the copy-mode table by
+# itself. Escape — or any key not bound below — is swallowed harmlessly and
+# leaves copy-mode and the cursor untouched. This overrides tmux's default bare
+# `z` (which is scroll-middle); `zz` reproduces that.
+#
+# An active selection survives all three: the anchor lives in buffer coordinates,
+# so only the viewport moves and the highlight stays on the same text.
+#
+# LIMITATION (tmux, not fixable here): tmux will not scroll past the live bottom
+# of the pane or past the top of the scrollback, so near those edges the command
+# clamps — it scrolls as far as it can and otherwise does nothing. In practice
+# `zt` is a no-op when you are already at the bottom of the buffer, and `zz`/`zb`
+# are no-ops at the very top of the history. vim fakes these with virtual `~`
+# lines; tmux has no equivalent. The cursor's content line is never disturbed.
+bind-key -T copy-mode-vi z switch-client -T copy-mode-z
+bind-key -T copy-mode-z  t send-keys -X scroll-top
+bind-key -T copy-mode-z  z send-keys -X scroll-middle
+bind-key -T copy-mode-z  b send-keys -X scroll-bottom
 
 # prefix+Y: enter copy-mode at the last line of output and start line-wise selection.
 # Extend with Up/k/PageUp, finish with y. Designed for quickly grabbing command output.
