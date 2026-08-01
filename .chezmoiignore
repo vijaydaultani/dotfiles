@@ -1,0 +1,10 @@
+# Repository metadata — these live in the source repo, not in $HOME.
+# Without this file chezmoi treats them as dotfiles and `chezmoi apply`
+# creates ~/LICENSE and ~/README.md on every machine.
+LICENSE
+README.md
+
+# Brewfile is only meaningful where Homebrew is, so keep it off Linux.
+{{ if ne .chezmoi.os "darwin" }}
+Brewfile
+{{ end }}
