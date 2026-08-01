@@ -343,9 +343,11 @@ bind-key -T copy-mode-z  t send-keys -X scroll-top
 bind-key -T copy-mode-z  z send-keys -X scroll-middle
 bind-key -T copy-mode-z  b send-keys -X scroll-bottom
 
-# vim-style `cursorline` for copy-mode, toggled with `c` (vim uses <Leader>b,
-# but `\` is easy-motion's copy-mode prefix and `b` is previous-word, so the
-# nearest free mnemonic key is used instead).
+# vim-style `cursorline` for copy-mode, toggled with `h` (for highlight). This
+# takes `h` away from cursor-left, which is a deliberate trade: C-h and the Left
+# arrow are both still bound to cursor-left, so nothing is actually lost. Vim's
+# own <Leader>b is unavailable here because `\` is easy-motion's copy-mode
+# prefix and `b` is previous-word.
 #
 # tmux has no cursorline option, and it cannot be faked with styles: the
 # copy-mode highlight is a client-side overlay, not a cell attribute, so the
@@ -365,7 +367,7 @@ bind-key -T copy-mode-z  b send-keys -X scroll-bottom
 # yanks the highlighted line. Toggle it off before making a manual `v` selection.
 set -g @cursorline 0
 
-bind-key -T copy-mode-vi c if -F '#{@cursorline}' \
+bind-key -T copy-mode-vi h if -F '#{@cursorline}' \
     'set -g @cursorline 0 ; send -X clear-selection' \
     'set -g @cursorline 1 ; send -X select-line'
 
@@ -435,5 +437,11 @@ set-option -g status-style          "bg=#191724,fg=#e0def4"
 set-option -g window-status-style   "bg=#191724,fg=#908caa"
 set-option -g message-style         "bg=#26233a,fg=#e0def4"
 set-option -g message-command-style "bg=#26233a,fg=#e0def4"
-set-window-option -g mode-style     "bg=colour250,fg=colour16"
+# Also the copy-mode cursorline highlight (see the `h` toggle above) — tmux has
+# a single mode-style, so the cursorline and a normal `v` selection necessarily
+# share it. White text rather than the palette's #e0def4: on this background
+# white gives 5.5:1 contrast vs 4.2:1, and this bar exists to be read through.
+# On a non-RGB terminal (currently screen-256color) tmux approximates the
+# background to colour61 / #5F5FAF, which is indistinguishable.
+set-window-option -g mode-style     "bg=#5F5FB5,fg=#FFFFFF"
 {{- end }}
