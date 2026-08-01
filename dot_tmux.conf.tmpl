@@ -439,13 +439,13 @@ set-option -g message-style         "bg=#26233a,fg=#e0def4"
 set-option -g message-command-style "bg=#26233a,fg=#e0def4"
 # Also the copy-mode cursorline highlight (see the `h` toggle above) — tmux has
 # a single mode-style, so the cursorline and a normal `v` selection necessarily
-# share it. White on this near-black teal measures 13:1 contrast, well past the
-# 4.5:1 readability threshold; the palette's #e0def4 would also work here (9.9:1)
-# if theme coherence is preferred over maximum legibility.
+# share it.
+# This magenta is mid-tone, so it is the tightest of the colours tried here:
+# white clears the 4.5:1 readability threshold only just, at 4.55:1 (black is a
+# hair better at 4.62:1, the palette's #e0def4 fails outright at 3.45:1). Fine
+# for a highlight bar, but do not darken the foreground expecting an improvement.
 # Rendered exactly wherever the client advertises the RGB terminal feature (it
-# does here). A client without RGB falls back to the nearest 256-colour entry,
-# which for this value is gray 235 / #262626 — the teal is lost, not merely
-# approximated, so check `#{client_termfeatures}` before assuming it looks right
-# on a new terminal.
-set-window-option -g mode-style     "bg=#073642,fg=#FFFFFF"
+# does here); a client without RGB falls back to colour168 / #d75f87, which stays
+# recognisably magenta. Check `#{client_termfeatures}` on a new terminal.
+set-window-option -g mode-style     "bg=#d33682,fg=#FFFFFF"
 {{- end }}
