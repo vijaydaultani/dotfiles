@@ -175,7 +175,14 @@ set -g default-terminal "screen-256color"
 
 # Forward clipboard over SSH via OSC 52 escape sequence.
 # Makes `y` in remote tmux push to the LOCAL Mac clipboard, so cmd+v pastes
-# the joined-line (-J) version instead of the visually-wrapped terminal selection.
+# the logical line rather than the visually-wrapped terminal selection.
+# NOTE: these bindings previously passed `-J` to copy-pipe-and-cancel. That is
+# not a valid flag — tmux consumed it AS the pipe command, silently ran `-J`,
+# and discarded the xclip command entirely (verified: `-J` behaves exactly like
+# a bogus `-Z`, while omitting the flag makes the pipe fire). Copying still
+# appeared to work only because the selection always lands in the tmux paste
+# buffer and set-clipboard forwards it via OSC 52. With `-J` removed, xclip now
+# actually runs and the local X clipboard is populated too.
 # Terminal must allow clipboard write (iTerm2: Settings → General → Selection →
 # "Applications in terminal may access clipboard"; Ghostty/kitty/WezTerm: on by default).
 set -g set-clipboard on
@@ -306,12 +313,23 @@ run '$HOME/.tmux/plugins/tpm/tpm'
 #----------------------------------------------------------------------
 # vim-style selection in copy-mode: v begins selection, y yanks to clipboard.
 # (C-v stays bound to rectangle-toggle by default for block selection.)
-# -J on copy-pipe-and-cancel joins soft-wrapped lines so long commands paste
-# as a single line instead of carrying tmux's display-time line breaks.
-bind-key -T copy-mode-vi v send-keys -X begin-selection
-bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel -J "xclip -selection clipboard"
-bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel -J "xclip -selection clipboard"
-bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel -J "xclip -selection clipboard"
+# These used to pass `-J` in the belief it joined soft-wrapped lines. It is not
+# a valid copy-pipe flag: tmux took it as the pipe command and threw the xclip
+# command away, so the pipe never ran (see the clipboard note near the top).
+# Wrapped lines are rejoined from the grid's wrap flags regardless, so nothing
+# is lost by dropping it — and xclip now actually runs.
+# v/V additionally set @cl_sel so the cursorline bindings below stop re-anchoring
+# while a real selection is being made; y/Enter clear it again. See that block.
+# `select-line` leaves the cursor at end-of-line, so when the highlight is on
+# there is no meaningful column to start from and v begins at the line start.
+# With the highlight off, v is stock: it starts wherever the cursor is.
+bind-key -T copy-mode-vi v if -F '#{@cursorline}' \
+    'set -g @cl_sel 1 ; send -X clear-selection ; send -X start-of-line ; send -X begin-selection' \
+    'set -g @cl_sel 1 ; send -X begin-selection'
+bind-key -T copy-mode-vi V set -g @cl_sel 1 \; send -X clear-selection \; send -X select-line
+bind-key -T copy-mode-vi y     set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X copy-pipe-and-cancel "xclip -selection clipboard"
+bind-key -T copy-mode-vi Enter set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X copy-pipe-and-cancel "xclip -selection clipboard"
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -selection clipboard"
 
 # vim-style zt / zz / zb in copy-mode: scroll the viewport so the cursor's line
 # sits at the top / centre / bottom of the pane, without moving the cursor off
@@ -357,8 +375,11 @@ bind-key -T copy-mode-z  b send-keys -X scroll-bottom
 # clear-selection + select-line. The highlight uses mode-style, same as a normal
 # selection.
 #
-# State lives in @cursorline so the motion bindings stay inert (a plain send -X)
-# while the feature is off. Horizontal and word motions are deliberately not
+# State lives in two options: @cursorline (highlight on) and @cl_sel (a real
+# selection is in progress). Motions re-anchor only when highlighting AND not
+# mid-selection, so pressing v suspends re-anchoring and the arrows extend the
+# selection normally — the highlight and ordinary copying coexist. Finishing
+# with y/Enter or aborting with Escape resumes it. Horizontal and word motions are deliberately not
 # wrapped: they can only ever re-select the line you are already on. Motions not
 # listed below (e.g. `w`, `{`, `}`) will extend the highlight while it is on;
 # any listed motion re-anchors it.
@@ -366,34 +387,38 @@ bind-key -T copy-mode-z  b send-keys -X scroll-bottom
 # Side effect worth knowing: while this is on there is a real selection, so `y`
 # yanks the highlighted line. Toggle it off before making a manual `v` selection.
 set -g @cursorline 0
+set -g @cl_sel 0
 
 bind-key -T copy-mode-vi h if -F '#{@cursorline}' \
-    'set -g @cursorline 0 ; send -X clear-selection' \
-    'set -g @cursorline 1 ; send -X select-line'
+    'set -g @cursorline 0 ; set -g @cl_sel 0 ; send -X clear-selection' \
+    'set -g @cursorline 1 ; set -g @cl_sel 0 ; send -X select-line'
 
-bind-key -T copy-mode-vi j        if -F '#{@cursorline}' 'send -X cursor-down    ; send -X clear-selection ; send -X select-line' 'send -X cursor-down'
-bind-key -T copy-mode-vi k        if -F '#{@cursorline}' 'send -X cursor-up      ; send -X clear-selection ; send -X select-line' 'send -X cursor-up'
-bind-key -T copy-mode-vi Down     if -F '#{@cursorline}' 'send -X cursor-down    ; send -X clear-selection ; send -X select-line' 'send -X cursor-down'
-bind-key -T copy-mode-vi Up       if -F '#{@cursorline}' 'send -X cursor-up      ; send -X clear-selection ; send -X select-line' 'send -X cursor-up'
-bind-key -T copy-mode-vi C-d      if -F '#{@cursorline}' 'send -X halfpage-down  ; send -X clear-selection ; send -X select-line' 'send -X halfpage-down'
-bind-key -T copy-mode-vi C-u      if -F '#{@cursorline}' 'send -X halfpage-up    ; send -X clear-selection ; send -X select-line' 'send -X halfpage-up'
-bind-key -T copy-mode-vi C-f      if -F '#{@cursorline}' 'send -X page-down      ; send -X clear-selection ; send -X select-line' 'send -X page-down'
-bind-key -T copy-mode-vi C-b      if -F '#{@cursorline}' 'send -X page-up        ; send -X clear-selection ; send -X select-line' 'send -X page-up'
-bind-key -T copy-mode-vi PageDown if -F '#{@cursorline}' 'send -X page-down      ; send -X clear-selection ; send -X select-line' 'send -X page-down'
-bind-key -T copy-mode-vi PageUp   if -F '#{@cursorline}' 'send -X page-up        ; send -X clear-selection ; send -X select-line' 'send -X page-up'
-bind-key -T copy-mode-vi G        if -F '#{@cursorline}' 'send -X history-bottom ; send -X clear-selection ; send -X select-line' 'send -X history-bottom'
-bind-key -T copy-mode-vi H        if -F '#{@cursorline}' 'send -X top-line       ; send -X clear-selection ; send -X select-line' 'send -X top-line'
-bind-key -T copy-mode-vi M        if -F '#{@cursorline}' 'send -X middle-line    ; send -X clear-selection ; send -X select-line' 'send -X middle-line'
-bind-key -T copy-mode-vi L        if -F '#{@cursorline}' 'send -X bottom-line    ; send -X clear-selection ; send -X select-line' 'send -X bottom-line'
-bind-key -T copy-mode-vi n        if -F '#{@cursorline}' 'send -X search-again   ; send -X clear-selection ; send -X select-line' 'send -X search-again'
-bind-key -T copy-mode-vi N        if -F '#{@cursorline}' 'send -X search-reverse ; send -X clear-selection ; send -X select-line' 'send -X search-reverse'
+%hidden CL='#{&&:#{@cursorline},#{==:#{@cl_sel},0}}'
+bind-key -T copy-mode-vi j        if -F "$CL" 'send -X cursor-down    ; send -X clear-selection ; send -X select-line' 'send -X cursor-down'
+bind-key -T copy-mode-vi k        if -F "$CL" 'send -X cursor-up      ; send -X clear-selection ; send -X select-line' 'send -X cursor-up'
+bind-key -T copy-mode-vi Down     if -F "$CL" 'send -X cursor-down    ; send -X clear-selection ; send -X select-line' 'send -X cursor-down'
+bind-key -T copy-mode-vi Up       if -F "$CL" 'send -X cursor-up      ; send -X clear-selection ; send -X select-line' 'send -X cursor-up'
+bind-key -T copy-mode-vi C-d      if -F "$CL" 'send -X halfpage-down  ; send -X clear-selection ; send -X select-line' 'send -X halfpage-down'
+bind-key -T copy-mode-vi C-u      if -F "$CL" 'send -X halfpage-up    ; send -X clear-selection ; send -X select-line' 'send -X halfpage-up'
+bind-key -T copy-mode-vi C-f      if -F "$CL" 'send -X page-down      ; send -X clear-selection ; send -X select-line' 'send -X page-down'
+bind-key -T copy-mode-vi C-b      if -F "$CL" 'send -X page-up        ; send -X clear-selection ; send -X select-line' 'send -X page-up'
+bind-key -T copy-mode-vi PageDown if -F "$CL" 'send -X page-down      ; send -X clear-selection ; send -X select-line' 'send -X page-down'
+bind-key -T copy-mode-vi PageUp   if -F "$CL" 'send -X page-up        ; send -X clear-selection ; send -X select-line' 'send -X page-up'
+bind-key -T copy-mode-vi G        if -F "$CL" 'send -X history-bottom ; send -X clear-selection ; send -X select-line' 'send -X history-bottom'
+bind-key -T copy-mode-vi H        if -F "$CL" 'send -X top-line       ; send -X clear-selection ; send -X select-line' 'send -X top-line'
+bind-key -T copy-mode-vi M        if -F "$CL" 'send -X middle-line    ; send -X clear-selection ; send -X select-line' 'send -X middle-line'
+bind-key -T copy-mode-vi L        if -F "$CL" 'send -X bottom-line    ; send -X clear-selection ; send -X select-line' 'send -X bottom-line'
+bind-key -T copy-mode-vi n        if -F "$CL" 'send -X search-again   ; send -X clear-selection ; send -X select-line' 'send -X search-again'
+bind-key -T copy-mode-vi N        if -F "$CL" 'send -X search-reverse ; send -X clear-selection ; send -X select-line' 'send -X search-reverse'
 
 # Leaving copy-mode must not leave @cursorline set, or the next copy-mode
 # session starts with the motion bindings re-anchoring a selection that was
 # never made. Both keep their stock action — q cancels, Escape only clears the
 # selection (in vi mode Escape does NOT exit copy-mode) — and just reset the flag.
-bind-key -T copy-mode-vi q      set -g @cursorline 0 \; send -X cancel
-bind-key -T copy-mode-vi Escape set -g @cursorline 0 \; send -X clear-selection
+bind-key -T copy-mode-vi q      set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X cancel
+# Escape aborts a manual selection and hands the line back to the cursorline.
+bind-key -T copy-mode-vi Escape set -g @cl_sel 0 \; if -F '#{@cursorline}' \
+    'send -X clear-selection ; send -X select-line' 'send -X clear-selection'
 
 # prefix+Y: enter copy-mode at the last line of output and start line-wise selection.
 # Extend with Up/k/PageUp, finish with y. Designed for quickly grabbing command output.
