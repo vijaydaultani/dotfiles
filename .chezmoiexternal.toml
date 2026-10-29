@@ -1,0 +1,7 @@
+# tmux-powerline is cloned directly rather than installed by TPM: .tmux.conf
+# calls powerline.sh from status-left/status-right itself. Track our fork so a
+# fresh machine gets it; existing clones are fast-forwarded on refresh.
+[".tmux/plugins/tmux-powerline"]
+    type = "git-repo"
+    url = "https://github.com/vijaydaultani/tmux-powerline.git"
+    refreshPeriod = "168h"
