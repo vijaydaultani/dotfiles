@@ -1,6 +1,6 @@
 {{- if eq .chezmoi.os "darwin" -}}
 #===================================================================
-# macOS variant (pbcopy-remote clipboard). See Linux branch below.
+# macOS variant (pbcopy clipboard, tmux-fzf, Everforest, easy-motion).
 #===================================================================
 #!/bin/zsh
 #tmux version 2.2
@@ -8,9 +8,11 @@
 # 0 is too far from ` ;)
 set -g base-index 1
 set -g pane-base-index 1
+set-option -g renumber-windows on
 
 # Reload tmux config
-bind r source-file $HOME/.tmux.conf
+bind r source-file $HOME/.tmux.conf \; display-message "Config reloaded!"
+bind R movew -r \; display-message "Windows renumbered!"
 
 # prefix binding key
 unbind C-b
@@ -30,10 +32,6 @@ bind -n C-k send-keys -R \; clear-history
 # default value is 2000
 # https://stackoverflow.com/questions/18760281/how-to-increase-scrollback-buffer-size-in-tmux
 set-option -g history-limit 3000
-
-# copy and paste to/from osx
-bind C-c run "tmux save-buffer - | pbcopy-remote"
-bind C-v run "tmux set-buffer $(pbpaste-remote); tmux paste-buffer"
 
 # change the key bindings to vi for copy mode so to use j, k, l, h
 setw -g mode-keys vi
@@ -60,9 +58,43 @@ bind > resize-pane -R 1
 # For using 256 color terminal in tmux
 set -g default-terminal "screen-256color"
 
-# Pane border
-set -g pane-border-style fg=colour238
-set -g pane-active-border-style fg=colour51
+# Forward clipboard over SSH via OSC 52 escape sequence.
+# Makes `y` in remote tmux push to the LOCAL Mac clipboard, so cmd+v pastes
+# the logical line rather than the visually-wrapped terminal selection.
+# NOTE: these bindings previously passed `-J` to copy-pipe-and-cancel. That is
+# not a valid flag — tmux consumed it AS the pipe command, silently ran `-J`,
+# and discarded the xclip command entirely (verified: `-J` behaves exactly like
+# a bogus `-Z`, while omitting the flag makes the pipe fire). Copying still
+# appeared to work only because the selection always lands in the tmux paste
+# buffer and set-clipboard forwards it via OSC 52. With `-J` removed, xclip now
+# actually runs and the local X clipboard is populated too.
+# Terminal must allow clipboard write (iTerm2: Settings → General → Selection →
+# "Applications in terminal may access clipboard"; Ghostty/kitty/WezTerm: on by default).
+set -g set-clipboard on
+set -as terminal-features ',xterm*:clipboard'
+set -as terminal-features ',screen*:clipboard'
+
+# Extended keys: let modifier combos like Ctrl+Shift+W survive to the application
+# instead of collapsing to Ctrl+W. tmux negotiates CSI-u reporting with the outer
+# terminal (iTerm2 supports it); needed to bind Ctrl+Shift+W to forward-kill-word.
+set -s extended-keys on
+set -as terminal-features ',xterm*:extkeys'
+
+#----------------------------------------------------------------------
+# Pane border / name display
+# Set directly (not via a client-attached hook): these are pure display
+# options with no plugin dependency, so sourcing them at server start is
+# deterministic. The old hook approach raced hook-registration against the
+# first attach and silently left the border bar "off" after a server restart.
+#----------------------------------------------------------------------
+set -g pane-border-lines heavy
+# Everforest Dark: grey0 inactive border, green active border; pane-name label
+# green when active, red when not.
+set -g pane-border-style fg=#7a8478
+set -g pane-active-border-style fg=#a7c080
+set -g pane-border-status top
+set -g pane-border-format '#{?pane_active,#[fg=#a7c080],#[fg=#e67e80]} #{pane_index}: #{@pane_name}#[default]'
+bind T command-prompt -p "Pane name:" 'set-option -p @pane_name "%%"'
 
 # Make zsh my default shell for tmux sessions
 set-option -g default-shell $SHELL
@@ -75,6 +107,14 @@ set-option -g status-left-length 60
 set-option -g status-right-length 90
 set-option -g status-left "#($HOME/.tmux/plugins/tmux-powerline/powerline.sh left)"
 set-option -g status-right "#($HOME/.tmux/plugins/tmux-powerline/powerline.sh right)"
+
+# Highlight the active window in the centre window-list so it stands out
+# against the other 7 inactive windows. The pink pill uses Nerd-Font
+# half-circle separators (U+E0B6 left, U+E0B4 right) for rounded edges —
+# the inactive status-bar bg (status-style) shows through the cap cells.
+# Half-cell block edges (U+2590 ▐ / U+258C ▌) — pure Unicode, works without
+# Nerd-Font powerline-extra glyphs. Visually approximates a soft pill edge.
+set-window-option -g window-status-current-format "#[fg=#a7c080,bg=default]▐#[fg=#1a1a1a,bg=#a7c080,bold]#I:#W#[fg=#a7c080,bg=default]▌"
 
 # https://superuser.com/questions/880497/how-do-i-resize-the-usable-area-of-a-tmux-session
 # aggresive resize
@@ -102,6 +142,22 @@ set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
 # Copy to the system clipboard in tmux
 set -g @plugin 'tmux-plugins/tmux-yank'
+# vim-easymotion-style jumps: word/2-char/single-char motions with hint labels.
+# Activate with prefix + Space, then a motion (w/b/e/f/F/s/...), then hint letters.
+# Our fork's `master` = upstream master plus two local bug fixes not upstream:
+#   1. Jump targets are computed in Unicode code points but handed to tmux as
+#      screen cell columns, so any line containing a double-width character
+#      (CJK, emoji) placed the cursor short — measured 10 columns off.
+#   2. The hint overlay is rendered in a full-size window and swapped into the
+#      target pane; for a split pane that swap resizes it and discards the copy
+#      mode scroll offset, so jumps taken while scrolled into the history landed
+#      off by the scroll delta.
+# Re-base fork master on upstream master when syncing the fork; if these ever land
+# upstream, point back at IngoMeyer441.
+set -g @plugin 'vijaydaultani/tmux-easy-motion'
+# fzf-driven menu over tmux objects (sessions, windows, panes, keybindings,
+# clipboard, processes). Activate with prefix + F. Requires fzf (installed).
+set -g @plugin 'sainnhe/tmux-fzf'
 
 #----------------------------------------------------------------------
 # Plugins settings
@@ -109,10 +165,208 @@ set -g @plugin 'tmux-plugins/tmux-yank'
 # Last saved enviornment is automatically restored when tmux is started
 set -g @continuum-restore 'on'
 
+# Persist per-pane @pane_name across server restarts. resurrect doesn't save
+# custom @-user-options, so hook our own save/restore onto its lifecycle:
+# post-save-all dumps names, post-restore-all re-applies them once panes exist.
+set -g @resurrect-hook-post-save-all 'sh ~/.tmux/resurrect-save-pane-names.sh'
+set -g @resurrect-hook-post-restore-all 'sh ~/.tmux/resurrect-restore-pane-names.sh'
+
+# Force tmux-yank to use the native macOS clipboard
+set -g @override_copy_command 'pbcopy'
+
+# tmux-easy-motion: activate with prefix + \  (instead of the default Space).
+# Disable all default motions and only bind w / W / l (line) — all bidirectional.
+set -g @easy-motion-prefix "\\"
+set -g @easy-motion-default-key-bindings 'off'
+set -g @easy-motion-binding-bd-w 'w'   # prefix + \ + w  → jump to any word (above or below)
+set -g @easy-motion-binding-bd-W 'W'   # prefix + \ + W  → jump to any WORD (whitespace-delimited)
+set -g @easy-motion-binding-bd-j 'l'   # prefix + \ + l  → jump to any line
+
+# tmux-fzf: in the pane switcher (prefix + g), show our custom @pane_name — the
+# title set via prefix + T — instead of the default [window_name:pane_title].
+# Panes without a name fall back to their running command (e.g. zsh, htop).
+# NOTE: tmux-fzf reads this from the server environment, so use set-environment
+# (not set -g @...); run-shell-spawned scripts inherit the global env.
+set-environment -g TMUX_FZF_PANE_FORMAT '#{?#{@pane_name},#{@pane_name},#{pane_current_command}}'
+
 #----------------------------------------------------------------------
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 #----------------------------------------------------------------------# 
 run '$HOME/.tmux/plugins/tpm/tpm'
+
+#----------------------------------------------------------------------
+# Overrides — must come AFTER plugins so they win the binding fight
+#----------------------------------------------------------------------
+# vim-style selection in copy-mode: v begins selection, y yanks to clipboard.
+# (C-v stays bound to rectangle-toggle by default for block selection.)
+# These used to pass `-J` in the belief it joined soft-wrapped lines. It is not
+# a valid copy-pipe flag: tmux took it as the pipe command and threw the xclip
+# command away, so the pipe never ran (see the clipboard note near the top).
+# Wrapped lines are rejoined from the grid's wrap flags regardless, so nothing
+# is lost by dropping it — and xclip now actually runs.
+# v/V additionally set @cl_sel so the cursorline bindings below stop re-anchoring
+# while a real selection is being made; y/Enter clear it again. See that block.
+# `select-line` leaves the cursor at end-of-line, so when the highlight is on
+# there is no meaningful column to start from and v begins at the line start.
+# With the highlight off, v is stock: it starts wherever the cursor is.
+bind-key -T copy-mode-vi v if -F '#{@cursorline}' \
+    'set -g @cl_sel 1 ; send -X clear-selection ; send -X start-of-line ; send -X begin-selection' \
+    'set -g @cl_sel 1 ; send -X begin-selection'
+bind-key -T copy-mode-vi V set -g @cl_sel 1 \; send -X clear-selection \; send -X select-line
+bind-key -T copy-mode-vi y     set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X copy-pipe-and-cancel "pbcopy"
+bind-key -T copy-mode-vi Enter set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X copy-pipe-and-cancel "pbcopy"
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
+
+# vim-style zt / zz / zb in copy-mode: scroll the viewport so the cursor's line
+# sits at the top / centre / bottom of the pane, without moving the cursor off
+# the line (or column) it was on.
+#
+# No helper script and no #{copy_cursor_y} arithmetic is needed: tmux 3.4 already
+# ships the exact primitives as native copy-mode commands. Note also that
+# scroll-up / scroll-down are the WRONG building blocks here — they pin the
+# cursor to its screen row and slide the content underneath it, so a hand-rolled
+# "scroll by N" implementation silently lands the cursor on a different line.
+#
+# Two-key sequences need a sub key-table: `z` parks the client in copy-mode-z for
+# exactly ONE keypress, after which tmux reverts to the copy-mode table by
+# itself. Escape — or any key not bound below — is swallowed harmlessly and
+# leaves copy-mode and the cursor untouched. This overrides tmux's default bare
+# `z` (which is scroll-middle); `zz` reproduces that.
+#
+# An active selection survives all three: the anchor lives in buffer coordinates,
+# so only the viewport moves and the highlight stays on the same text.
+#
+# LIMITATION (tmux, not fixable here): tmux will not scroll past the live bottom
+# of the pane or past the top of the scrollback, so near those edges the command
+# clamps — it scrolls as far as it can and otherwise does nothing. In practice
+# `zt` is a no-op when you are already at the bottom of the buffer, and `zz`/`zb`
+# are no-ops at the very top of the history. vim fakes these with virtual `~`
+# lines; tmux has no equivalent. The cursor's content line is never disturbed.
+bind-key -T copy-mode-vi z switch-client -T copy-mode-z
+bind-key -T copy-mode-z  t send-keys -X scroll-top
+bind-key -T copy-mode-z  z send-keys -X scroll-middle
+bind-key -T copy-mode-z  b send-keys -X scroll-bottom
+
+# vim-style `cursorline` for copy-mode, toggled with `h` (for highlight). This
+# takes `h` away from cursor-left, which is a deliberate trade: C-h and the Left
+# arrow are both still bound to cursor-left, so nothing is actually lost. Vim's
+# own <Leader>b is unavailable here because `\` is easy-motion's copy-mode
+# prefix and `b` is previous-word.
+#
+# tmux has no cursorline option, and it cannot be faked with styles: the
+# copy-mode highlight is a client-side overlay, not a cell attribute, so the
+# only way to tint a whole line is to genuinely select it. `select-line`
+# highlights exactly the cursor's line, but any following motion EXTENDS that
+# selection — it is vim's visual-line mode — so every motion must re-anchor with
+# clear-selection + select-line. The highlight uses mode-style, same as a normal
+# selection.
+#
+# State lives in two options: @cursorline (highlight on) and @cl_sel (a real
+# selection is in progress). Motions re-anchor only when highlighting AND not
+# mid-selection, so pressing v suspends re-anchoring and the arrows extend the
+# selection normally — the highlight and ordinary copying coexist. Finishing
+# with y/Enter or aborting with Escape resumes it. Horizontal and word motions are deliberately not
+# wrapped: they can only ever re-select the line you are already on. Motions not
+# listed below (e.g. `w`, `{`, `}`) will extend the highlight while it is on;
+# any listed motion re-anchors it.
+#
+# Side effect worth knowing: while this is on there is a real selection, so `y`
+# yanks the highlighted line. Toggle it off before making a manual `v` selection.
+set -g @cursorline 0
+set -g @cl_sel 0
+# Copy-mode can also be left without q/y/Enter (scrolling back to the bottom,
+# mouse, prefix+]), which left @cursorline stuck at 1 so the next `h` toggled
+# it OFF and showed nothing. Reset both flags on every copy-mode entry/exit.
+set-hook -g pane-mode-changed 'set -g @cursorline 0 ; set -g @cl_sel 0'
+
+bind-key -T copy-mode-vi h if -F '#{@cursorline}' \
+    'set -g @cursorline 0 ; set -g @cl_sel 0 ; send -X clear-selection' \
+    'set -g @cursorline 1 ; set -g @cl_sel 0 ; send -X select-line'
+
+%hidden CL='#{&&:#{@cursorline},#{==:#{@cl_sel},0}}'
+bind-key -T copy-mode-vi j        if -F "$CL" 'send -X cursor-down    ; send -X clear-selection ; send -X select-line' 'send -X cursor-down'
+bind-key -T copy-mode-vi k        if -F "$CL" 'send -X cursor-up      ; send -X clear-selection ; send -X select-line' 'send -X cursor-up'
+bind-key -T copy-mode-vi Down     if -F "$CL" 'send -X cursor-down    ; send -X clear-selection ; send -X select-line' 'send -X cursor-down'
+bind-key -T copy-mode-vi Up       if -F "$CL" 'send -X cursor-up      ; send -X clear-selection ; send -X select-line' 'send -X cursor-up'
+bind-key -T copy-mode-vi C-d      if -F "$CL" 'send -X halfpage-down  ; send -X clear-selection ; send -X select-line' 'send -X halfpage-down'
+bind-key -T copy-mode-vi C-u      if -F "$CL" 'send -X halfpage-up    ; send -X clear-selection ; send -X select-line' 'send -X halfpage-up'
+bind-key -T copy-mode-vi C-f      if -F "$CL" 'send -X page-down      ; send -X clear-selection ; send -X select-line' 'send -X page-down'
+bind-key -T copy-mode-vi C-b      if -F "$CL" 'send -X page-up        ; send -X clear-selection ; send -X select-line' 'send -X page-up'
+bind-key -T copy-mode-vi PageDown if -F "$CL" 'send -X page-down      ; send -X clear-selection ; send -X select-line' 'send -X page-down'
+bind-key -T copy-mode-vi PageUp   if -F "$CL" 'send -X page-up        ; send -X clear-selection ; send -X select-line' 'send -X page-up'
+bind-key -T copy-mode-vi G        if -F "$CL" 'send -X history-bottom ; send -X clear-selection ; send -X select-line' 'send -X history-bottom'
+bind-key -T copy-mode-vi H        if -F "$CL" 'send -X top-line       ; send -X clear-selection ; send -X select-line' 'send -X top-line'
+bind-key -T copy-mode-vi M        if -F "$CL" 'send -X middle-line    ; send -X clear-selection ; send -X select-line' 'send -X middle-line'
+bind-key -T copy-mode-vi L        if -F "$CL" 'send -X bottom-line    ; send -X clear-selection ; send -X select-line' 'send -X bottom-line'
+bind-key -T copy-mode-vi n        if -F "$CL" 'send -X search-again   ; send -X clear-selection ; send -X select-line' 'send -X search-again'
+bind-key -T copy-mode-vi N        if -F "$CL" 'send -X search-reverse ; send -X clear-selection ; send -X select-line' 'send -X search-reverse'
+
+# Leaving copy-mode must not leave @cursorline set, or the next copy-mode
+# session starts with the motion bindings re-anchoring a selection that was
+# never made. Both keep their stock action — q cancels, Escape only clears the
+# selection (in vi mode Escape does NOT exit copy-mode) — and just reset the flag.
+bind-key -T copy-mode-vi q      set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X cancel
+# Escape aborts a manual selection and hands the line back to the cursorline.
+bind-key -T copy-mode-vi Escape set -g @cl_sel 0 \; if -F '#{@cursorline}' \
+    'send -X clear-selection ; send -X select-line' 'send -X clear-selection'
+
+# prefix+Y: enter copy-mode at the last line of output and start line-wise selection.
+# Extend with Up/k/PageUp, finish with y. Designed for quickly grabbing command output.
+bind Y copy-mode \; send-keys -X cursor-up \; send-keys -X select-line
+
+# prefix+p pastes the most recent tmux buffer (overrides default `previous-window`).
+# Default `prefix+]` still works too.
+unbind p
+bind p paste-buffer
+
+# tmux-fzf direct pickers (bypass the prefix+F menu):
+#   prefix + g  → fuzzy "go to pane"  (across all sessions/windows)
+#   prefix + w  → fuzzy window switcher (replaces default choose-tree)
+# The `switch` arg skips tmux-fzf's action submenu (switch/link/move/swap/…) and
+# jumps straight to the target list. Bound here in Overrides so prefix+w wins
+# over tmux's built-in choose-tree.
+bind g run-shell -b '$HOME/.tmux/plugins/tmux-fzf/scripts/pane.sh switch'
+bind w run-shell -b '$HOME/.tmux/plugins/tmux-fzf/scripts/window.sh switch'
+
+# Restore prefix+Space → next-layout. tmux-easy-motion grabbed Space on its first
+# load; relocating its prefix to "\" doesn't unbind the old Space binding, so do
+# it explicitly here and rebind to the default action.
+unbind-key -T prefix Space
+bind-key Space next-layout
+
+# prefix+P pastes a FLATTENED copy: every newline in the buffer is replaced with
+# a space. Useful when -J's "preserve real newlines" behavior breaks the paste
+# (e.g. multi-line shell with $(...) | ... '...' contexts where zsh redraws PS2).
+# Uses a throwaway named buffer ("flat") that's deleted right after, so prefix+p
+# still pastes the original unmodified buffer.
+bind P run-shell 'tmux save-buffer - | tr "\n" " " | tmux load-buffer -b flat - ; tmux paste-buffer -b flat -d'
+
+#----------------------------------------------------------------------
+# Everforest Dark palette (macOS; servers use Rosé Pine) applied to tmux's own style options.
+# Powerline still drives status-left/right content; this just colors
+# the underlying bar, borders, message bar, and mode indicators.
+#  bg0=#2d353b  bg2=#3d484d  fg=#d3c6aa  grey2=#9da9a0
+#  aqua=#83c092  blue=#7fbbb3  green=#a7c080  orange=#e69875
+#----------------------------------------------------------------------
+set-option -g status-style          "bg=#2d353b,fg=#d3c6aa"
+set-option -g window-status-style   "bg=#2d353b,fg=#9da9a0"
+set-option -g message-style         "bg=#3d484d,fg=#d3c6aa"
+set-option -g message-command-style "bg=#3d484d,fg=#d3c6aa"
+# Also the copy-mode cursorline highlight (see the `h` toggle above) — tmux has
+# a single mode-style, so the cursorline and a normal `v` selection necessarily
+# share it.
+# This magenta is mid-tone, so it is the tightest of the colours tried here:
+# white clears the 4.5:1 readability threshold only just, at 4.55:1 (black is a
+# hair better at 4.62:1, the palette's #e0def4 fails outright at 3.45:1). Fine
+# for a highlight bar, but do not darken the foreground expecting an improvement.
+# Rendered exactly wherever the client advertises the RGB terminal feature (it
+# does here); a client without RGB falls back to colour168 / #d75f87, which stays
+# recognisably magenta. Check `#{client_termfeatures}` on a new terminal.
+# Keep the hex LOWERCASE: tmux 3.6+ draws the selection via
+# copy-mode-selection-style = "#{E:mode-style}", which format-expands this value,
+# and an uppercase `#F` is the window-flags alias — "fg=#FFFFFF" became
+# "fg=*FFFFF", an invalid style, so no selection or cursorline was drawn at all.
+set-window-option -g mode-style     "bg=#d33682,fg=#ffffff"
 {{- else -}}
 #===================================================================
 # Linux variant (xclip clipboard, tmux-fzf, Rosé Pine, easy-motion).
@@ -387,6 +641,10 @@ bind-key -T copy-mode-z  b send-keys -X scroll-bottom
 # yanks the highlighted line. Toggle it off before making a manual `v` selection.
 set -g @cursorline 0
 set -g @cl_sel 0
+# Copy-mode can also be left without q/y/Enter (scrolling back to the bottom,
+# mouse, prefix+]), which left @cursorline stuck at 1 so the next `h` toggled
+# it OFF and showed nothing. Reset both flags on every copy-mode entry/exit.
+set-hook -g pane-mode-changed 'set -g @cursorline 0 ; set -g @cl_sel 0'
 
 bind-key -T copy-mode-vi h if -F '#{@cursorline}' \
     'set -g @cursorline 0 ; set -g @cl_sel 0 ; send -X clear-selection' \
@@ -471,5 +729,9 @@ set-option -g message-command-style "bg=#26233a,fg=#e0def4"
 # Rendered exactly wherever the client advertises the RGB terminal feature (it
 # does here); a client without RGB falls back to colour168 / #d75f87, which stays
 # recognisably magenta. Check `#{client_termfeatures}` on a new terminal.
-set-window-option -g mode-style     "bg=#d33682,fg=#FFFFFF"
+# Keep the hex LOWERCASE: tmux 3.6+ draws the selection via
+# copy-mode-selection-style = "#{E:mode-style}", which format-expands this value,
+# and an uppercase `#F` is the window-flags alias — "fg=#FFFFFF" became
+# "fg=*FFFFF", an invalid style, so no selection or cursorline was drawn at all.
+set-window-option -g mode-style     "bg=#d33682,fg=#ffffff"
 {{- end }}

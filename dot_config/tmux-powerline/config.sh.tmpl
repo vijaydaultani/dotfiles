@@ -1,0 +1,85 @@
+{{- if eq .chezmoi.os "darwin" -}}
+# tmux-powerline user config — Everforest Dark palette (macOS).
+# The Mac deliberately uses Everforest with an orange hostname segment so it
+# is distinguishable at a glance from the servers' Rosé Pine palette.
+# Powerline reads this file on every status redraw, so changes are live within
+# one status-interval (2s by default).
+#
+# Everforest Dark (medium) palette:
+#   bg0=#2d353b    bg2=#3d484d    fg=#d3c6aa      grey2=#9da9a0
+#   aqua=#83c092   blue=#7fbbb3   green=#a7c080
+#   orange=#e69875 yellow=#dbbc7f
+
+export TMUX_POWERLINE_THEME='default'
+export TMUX_POWERLINE_PATCHED_FONT_IN_USE='true'
+
+# Weather: fixed location for Indore, India (22.7196°N, 75.8577°E).
+# Auto-detect mode leaked a unix timestamp into the displayed string;
+# fixed coordinates bypass the auto-detect cache path.
+export TMUX_POWERLINE_SEG_WEATHER_LAT='22.7196'
+export TMUX_POWERLINE_SEG_WEATHER_LON='75.8577'
+export TMUX_POWERLINE_SEG_WEATHER_UNIT='c'
+export TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER='yrno'
+export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD='600'
+
+# Bar background + default foreground.
+export TMUX_POWERLINE_DEFAULT_BACKGROUND_COLOR='#2d353b'  # bg0
+export TMUX_POWERLINE_DEFAULT_FOREGROUND_COLOR='#d3c6aa'  # fg
+
+# Each entry: "segment_name bg_color fg_color".
+# Alternating bg0/bg2 backgrounds give a subtle stripe between segments
+# (powerline draws an arrow separator wherever adjacent bg colors differ).
+TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
+    "tmux_session_info #2d353b #83c092"  # bg0 / aqua
+    "hostname          #e69875 #2d353b"  # orange / bg0 — Mac marker
+    "vcs_branch        #7fbbb3 #2d353b"  # blue / bg0 — git branch as accent
+)
+
+TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
+    "weather  #3d484d #83c092"  # bg2 / aqua — temp for Indore
+    "date_day #2d353b #dbbc7f"  # bg0 / yellow
+    "date     #3d484d #dbbc7f"  # bg2 / yellow
+    "time     #2d353b #d3c6aa"  # bg0 / fg
+)
+{{- else -}}
+# tmux-powerline user config — Rosé Pine palette.
+# Powerline reads this file on every status redraw, so changes are live within
+# one status-interval (2s by default).
+#
+# Rosé Pine "main" palette:
+#   base=#191724   surface=#1f1d2e  overlay=#26233a  muted=#6e6a86
+#   subtle=#908caa text=#e0def4     love=#eb6f92     gold=#f6c177
+#   rose=#ebbcba   pine=#31748f     foam=#9ccfd8     iris=#c4a7e7
+
+export TMUX_POWERLINE_THEME='default'
+export TMUX_POWERLINE_PATCHED_FONT_IN_USE='true'
+
+# Weather: fixed location for Indore, India (22.7196°N, 75.8577°E).
+# Auto-detect mode leaked a unix timestamp into the displayed string;
+# fixed coordinates bypass the auto-detect cache path.
+export TMUX_POWERLINE_SEG_WEATHER_LAT='22.7196'
+export TMUX_POWERLINE_SEG_WEATHER_LON='75.8577'
+export TMUX_POWERLINE_SEG_WEATHER_UNIT='c'
+export TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER='yrno'
+export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD='600'
+
+# Bar background + default foreground.
+export TMUX_POWERLINE_DEFAULT_BACKGROUND_COLOR='#191724'  # base
+export TMUX_POWERLINE_DEFAULT_FOREGROUND_COLOR='#e0def4'  # text
+
+# Each entry: "segment_name bg_color fg_color".
+# Alternating base/overlay backgrounds give a subtle stripe between segments
+# (powerline draws an arrow separator wherever adjacent bg colors differ).
+TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
+    "tmux_session_info #191724 #c4a7e7"  # base / iris
+    "hostname          #26233a #e0def4"  # overlay / text
+    "vcs_branch        #31748f #191724"  # pine / base — git branch as accent
+)
+
+TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
+    "weather  #26233a #9ccfd8"  # overlay / foam — temp for Indore
+    "date_day #191724 #f6c177"  # base / gold
+    "date     #26233a #f6c177"  # overlay / gold
+    "time     #191724 #e0def4"  # base / text
+)
+{{- end }}
