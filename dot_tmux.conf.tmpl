@@ -355,16 +355,18 @@ set-option -g message-command-style "bg=#3d484d,fg=#d3c6aa"
 # Also the copy-mode cursorline highlight (see the `h` toggle above) — tmux has
 # a single mode-style, so the cursorline and a normal `v` selection necessarily
 # share it.
-# This sage green is light, so the text must be dark: the palette's base
-# #191724 reads at 8.66:1, while white fails at 2.04:1 (as does #e0def4, 1.55:1).
+# This magenta is mid-tone, so it is the tightest of the colours tried here:
+# white clears the 4.5:1 readability threshold only just, at 4.55:1 (black is a
+# hair better at 4.62:1, the palette's #e0def4 fails outright at 3.45:1). Fine
+# for a highlight bar, but do not darken the foreground expecting an improvement.
 # Rendered exactly wherever the client advertises the RGB terminal feature (it
-# does here); a client without RGB falls back to colour144 / #afaf87, which stays
-# a muted green. Check `#{client_termfeatures}` on a new terminal.
+# does here); a client without RGB falls back to colour168 / #d75f87, which stays
+# recognisably magenta. Check `#{client_termfeatures}` on a new terminal.
 # Keep the hex LOWERCASE: tmux 3.6+ draws the selection via
 # copy-mode-selection-style = "#{E:mode-style}", which format-expands this value,
 # and an uppercase `#F` is the window-flags alias — "fg=#FFFFFF" became
 # "fg=*FFFFF", an invalid style, so no selection or cursorline was drawn at all.
-set-window-option -g mode-style     "bg=#a3be8c,fg=#191724"
+set-window-option -g mode-style     "bg=#d33682,fg=#ffffff"
 {{- else -}}
 #===================================================================
 # Linux variant (xclip clipboard, tmux-fzf, Rosé Pine, easy-motion).
@@ -720,14 +722,16 @@ set-option -g message-command-style "bg=#26233a,fg=#e0def4"
 # Also the copy-mode cursorline highlight (see the `h` toggle above) — tmux has
 # a single mode-style, so the cursorline and a normal `v` selection necessarily
 # share it.
-# This sage green is light, so the text must be dark: the palette's base
-# #191724 reads at 8.66:1, while white fails at 2.04:1 (as does #e0def4, 1.55:1).
+# This magenta is mid-tone, so it is the tightest of the colours tried here:
+# white clears the 4.5:1 readability threshold only just, at 4.55:1 (black is a
+# hair better at 4.62:1, the palette's #e0def4 fails outright at 3.45:1). Fine
+# for a highlight bar, but do not darken the foreground expecting an improvement.
 # Rendered exactly wherever the client advertises the RGB terminal feature (it
-# does here); a client without RGB falls back to colour144 / #afaf87, which stays
-# a muted green. Check `#{client_termfeatures}` on a new terminal.
+# does here); a client without RGB falls back to colour168 / #d75f87, which stays
+# recognisably magenta. Check `#{client_termfeatures}` on a new terminal.
 # Keep the hex LOWERCASE: tmux 3.6+ draws the selection via
 # copy-mode-selection-style = "#{E:mode-style}", which format-expands this value,
 # and an uppercase `#F` is the window-flags alias — "fg=#FFFFFF" became
 # "fg=*FFFFF", an invalid style, so no selection or cursorline was drawn at all.
-set-window-option -g mode-style     "bg=#a3be8c,fg=#191724"
+set-window-option -g mode-style     "bg=#d33682,fg=#ffffff"
 {{- end }}
