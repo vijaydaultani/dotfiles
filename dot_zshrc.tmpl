@@ -73,6 +73,16 @@ source $ZSH/oh-my-zsh.sh
 [[ -f $HOME/.aliases/local.aliases ]] && \
     source $HOME/.aliases/local.aliases
 
+# enhancd makes `cd` an alias for its __enhancd::cd function, which has no
+# completion of its own, so `cd <Tab>` completed nothing. Reuse cd's. Done at
+# the first prompt: zsh-autocomplete re-runs compinit there, which would wipe
+# a compdef made earlier in this file.
+_enhancd_cd_completion() {
+    (( $+functions[__enhancd::cd] )) && compdef __enhancd::cd=cd
+    add-zsh-hook -d precmd _enhancd_cd_completion
+}
+autoload -Uz add-zsh-hook && add-zsh-hook precmd _enhancd_cd_completion
+
 # To customize prompt, run `p10k configure` or edit $HOME/.p10k.zsh.
 [[ -f $HOME/.p10k.zsh ]] &&  source $HOME/.p10k.zsh
 {{- if eq .chezmoi.os "darwin" }}
