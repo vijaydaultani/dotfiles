@@ -26,8 +26,3 @@ antigen bundle zpm-zsh/clipboard
 
 # Tell Antigen that you're done.
 antigen apply
-
-# It enables highlighting of commands whilst they are typed at a 
-# zsh prompt into an interactive terminal
-# Remember this should be the last line of antigen bundles file
-antigen bundle zsh-users/zsh-syntax-highlighting
