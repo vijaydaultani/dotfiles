@@ -1,1 +1,6 @@
 env_prompt: '({name}) '
+
+# Package cache in $HOME: /opt/miniforge3 is root-owned, so its pkgs dir is not
+# writable by normal users.
+pkgs_dirs:
+  - ~/.conda/pkgs

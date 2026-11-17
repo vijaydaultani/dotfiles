@@ -14,8 +14,10 @@ alias slatec="chezmoi edit $HOME/.slate"
 
 # Productivity
 alias szsh="source $HOME/.zshrc"
+alias ezsh="nvim $HOME/.zshrc"
 alias sbash="source $HOME/.bashrc"
 alias lsl="ls -hal"
+alias nvitop="/opt/miniforge3/bin/nvitop"
 
 # Print enviornment variables
 alias ecvd="echo $CUDA_VISIBLE_DEVICES"
@@ -26,8 +28,28 @@ alias pbpaste="xclip -selection clipboard -o"
 
 #----------------------------------------------------------------------
 # Write custom functions
-##----------------------------------------------------------------------
-
+#----------------------------------------------------------------------
+# Tree command with wcl
+treewc() {
+  local dir="${1:-.}" 
+  _treewc_inner() {
+    local dir="$1" prefix="$2"
+    local entries=("$dir"/*) count=${#entries[@]} i=0
+    for entry in "${entries[@]}"; do
+      ((i++))
+      local connector="├──" ext="│   "
+      [[ $i -eq $count ]] && connector="└──" && ext="    "
+      if [[ -f "$entry" ]]; then
+        echo "${prefix}${connector} $(basename "$entry") [$(wc -l < "$entry") lines]"
+      elif [[ -d "$entry" ]]; then
+        echo "${prefix}${connector} $(basename "$entry")/"
+        _treewc_inner "$entry" "${prefix}${ext}"
+      fi
+    done
+  }
+  echo "${dir}/"
+  _treewc_inner "$dir" ""
+}
 # Print tab separated values on new line even with missing columns
 function trt () {
     tr "\t" "\n" | nl -b a
