@@ -17,7 +17,9 @@ antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle agkozak/zsh-z
 
 # Enhanced cd
-antigen bundle b4b4r07/enhancd
+# (repo moved from b4b4r07 and its default branch is main; antigen v2 assumes
+# master unless told otherwise)
+antigen bundle babarot/enhancd --branch=main
 
 # Clipboard manager for pbcopy and pbpaste across machines
 antigen bundle zpm-zsh/clipboard
