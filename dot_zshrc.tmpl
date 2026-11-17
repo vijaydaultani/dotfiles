@@ -122,15 +122,10 @@ fi
 unset __mamba_setup
 # <<< mamba initialize <<<
 
-# Hugging Face: HF_HOME stays per-user (token, config). Where the host has a
-# team-shared cache (shiva: /common/hf_cache), models and datasets go there so
-# they are downloaded once for everyone; elsewhere (ganesha) they stay under
-# HF_HOME.
+# Hugging Face: HF_HOME (token, config) stays per-user. The shared model and
+# dataset cache (HF_HUB_CACHE/HF_DATASETS_CACHE -> /home/common/hf_cache) is set
+# for all users in /etc/environment on ganesha and shiva.
 export HF_HOME="$HOME/.cache/huggingface"
-if [[ -d /common/hf_cache/hub ]]; then
-    export HF_HUB_CACHE=/common/hf_cache/hub
-    export HF_DATASETS_CACHE=/common/hf_cache/datasets
-fi
 
 # For better shell integration with Cursor
 PROMPT_EOL_MARK=""
