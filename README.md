@@ -37,9 +37,9 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-
 git clone https://github.com/tmux-plugins/tpm $HOME/.tmux/plugins/tpm
 ```
 
-* Install chezmoi run this from $HOME/local which should install chezmoi inside $HOME/local/bin which should be in path
+* Install chezmoi into $HOME/.local/bin (already on PATH via .zshrc/.bashrc)
 ```
-sh -c "$(curl -fsLS git.io/chezmoi)"
+sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
 ```
 
 ## Tool specific settings
@@ -72,8 +72,8 @@ brew install neovim
 ```
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 chmod u+x nvim.appimage
-mv nvim.appimage $HOME/local/bin
-ln -s $HOME/local/bin/nvim.appimage $HOME/local/bin/nvim
+mv nvim.appimage $HOME/.local/bin
+ln -s $HOME/.local/bin/nvim.appimage $HOME/.local/bin/nvim
 ```
 
 ## Setup Chezmoi

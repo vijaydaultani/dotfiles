@@ -1,4 +1,4 @@
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # conda/mamba from the shared /opt/miniforge3 (ganesha, shiva); skipped on
 # machines without it (dwarapala, macOS).
