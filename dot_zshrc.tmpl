@@ -26,32 +26,14 @@ export PATH="$HOME/.gem/ruby/3.0.0/bin:$PATH"
 # commented out by conda initialize
 # export PATH="$HOME/local/opt/anaconda2/bin:$PATH"
 export PATH="$HOME/local/opt/anaconda3/bin:$PATH"
-{{- else }}
-# HOME of other non standard packages
-#export J2SDKDIR="$HOME/local/lib/jdk-9.0.4"
-#export J2REDIR="$HOME/local/lib/jdk-9.0.4/jre"
-#export JAVA_HOME="$HOME/local/lib/jdk-9.0.4"
-#export DERBY_HOME="$HOME/local/lib/jdk-9.0.4/db"
-#export ANT_HOME="$HOME/local/source/ant"
-#export MAVEN_HOME="$HOME/local/source/apache-maven-3.8.1"
-export VIMINIT="source $HOME/.vimrc"
-#export RUBY_HOME="/usr/local/opt/ruby/bin:/usr/local/lib/ruby/gems/3.0.0/bin"
-#export KAGGLE_CONFIG_DIR="$HOME/.kaggle/kaggle.json"
-
-# Expand path variable
-export PATH=/usr/local/bin:$PATH
-export PATH="${ANT_HOME}/bin:$PATH"
-export PATH="${MAVEN_HOME}/bin:$PATH"
-export PATH="${JAVA_HOME}/bin:$PATH"
-export PATH="${RUBY_HOME}:$PATH"
-export PATH="$HOME/.gem/ruby/3.0.0/bin:$PATH"
-# commented out by conda initialize
-# export PATH="$HOME/local/opt/anaconda2/bin:$PATH"
-export PATH="/opt/miniforge3/bin:$PATH"
-{{- end }}
 
 # Expand library path
 export LD_LIBRARY_PATH="$HOME/local/lib:$LD_LIBRARY_PATH"
+{{- else }}
+export VIMINIT="source $HOME/.vimrc"
+# PATH: ~/.local/bin is added at the end of this file; /opt/miniforge3/bin
+# comes from the conda hook (auto_activate_base).
+{{- end }}
 
 # Theme to load, you can find different themes below
 # https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
