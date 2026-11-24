@@ -213,8 +213,8 @@ bind-key -T copy-mode-vi v if -F '#{@cursorline}' \
     'set -g @cl_sel 1 ; send -X clear-selection ; send -X start-of-line ; send -X begin-selection' \
     'set -g @cl_sel 1 ; send -X begin-selection'
 bind-key -T copy-mode-vi V set -g @cl_sel 1 \; send -X clear-selection \; send -X select-line
-bind-key -T copy-mode-vi y     set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X copy-pipe-and-cancel "pbcopy"
-bind-key -T copy-mode-vi Enter set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X copy-pipe-and-cancel "pbcopy"
+bind-key -T copy-mode-vi y     set -g @cl_sel 0 \; send -X copy-pipe-and-cancel "pbcopy"
+bind-key -T copy-mode-vi Enter set -g @cl_sel 0 \; send -X copy-pipe-and-cancel "pbcopy"
 bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "pbcopy"
 
 # vim-style zt / zz / zb in copy-mode: scroll the viewport so the cursor's line
@@ -272,12 +272,13 @@ bind-key -T copy-mode-z  b send-keys -X scroll-bottom
 #
 # Side effect worth knowing: while this is on there is a real selection, so `y`
 # yanks the highlighted line. Toggle it off before making a manual `v` selection.
-set -g @cursorline 0
 set -g @cl_sel 0
-# Copy-mode can also be left without q/y/Enter (scrolling back to the bottom,
-# mouse, prefix+]), which left @cursorline stuck at 1 so the next `h` toggled
-# it OFF and showed nothing. Reset both flags on every copy-mode entry/exit.
-set-hook -g pane-mode-changed 'set -g @cursorline 0 ; set -g @cl_sel 0'
+# @cursorline is a sticky preference: only `h` flips it, so it survives leaving
+# copy-mode by any route (q, y, Enter, scrolling back to the bottom, mouse,
+# prefix+]). The highlight itself is a selection and dies with copy-mode, so
+# re-draw it on every entry while the preference is on; on exit just drop the
+# in-progress-selection flag. prefix+Y sets @cl_sel first to opt out.
+set-hook -g pane-mode-changed "if -F '#{!=:#{pane_mode},copy-mode}' 'set -g @cl_sel 0' \"if -F '#{&&:#{@cursorline},#{==:#{@cl_sel},0}}' 'send -X select-line'\""
 
 bind-key -T copy-mode-vi h if -F '#{@cursorline}' \
     'set -g @cursorline 0 ; set -g @cl_sel 0 ; send -X clear-selection' \
@@ -301,18 +302,16 @@ bind-key -T copy-mode-vi L        if -F "$CL" 'send -X bottom-line    ; send -X 
 bind-key -T copy-mode-vi n        if -F "$CL" 'send -X search-again   ; send -X clear-selection ; send -X select-line' 'send -X search-again'
 bind-key -T copy-mode-vi N        if -F "$CL" 'send -X search-reverse ; send -X clear-selection ; send -X select-line' 'send -X search-reverse'
 
-# Leaving copy-mode must not leave @cursorline set, or the next copy-mode
-# session starts with the motion bindings re-anchoring a selection that was
-# never made. Both keep their stock action — q cancels, Escape only clears the
-# selection (in vi mode Escape does NOT exit copy-mode) — and just reset the flag.
-bind-key -T copy-mode-vi q      set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X cancel
+# Both keep their stock action — q cancels, Escape only clears the selection
+# (in vi mode Escape does NOT exit copy-mode) — and leave @cursorline alone.
+bind-key -T copy-mode-vi q      set -g @cl_sel 0 \; send -X cancel
 # Escape aborts a manual selection and hands the line back to the cursorline.
 bind-key -T copy-mode-vi Escape set -g @cl_sel 0 \; if -F '#{@cursorline}' \
     'send -X clear-selection ; send -X select-line' 'send -X clear-selection'
 
 # prefix+Y: enter copy-mode at the last line of output and start line-wise selection.
 # Extend with Up/k/PageUp, finish with y. Designed for quickly grabbing command output.
-bind Y copy-mode \; send-keys -X cursor-up \; send-keys -X select-line
+bind Y set -g @cl_sel 1 \; copy-mode \; send-keys -X clear-selection \; send-keys -X cursor-up \; send-keys -X select-line
 
 # prefix+p pastes the most recent tmux buffer (overrides default `previous-window`).
 # Default `prefix+]` still works too.
@@ -580,8 +579,8 @@ bind-key -T copy-mode-vi v if -F '#{@cursorline}' \
     'set -g @cl_sel 1 ; send -X clear-selection ; send -X start-of-line ; send -X begin-selection' \
     'set -g @cl_sel 1 ; send -X begin-selection'
 bind-key -T copy-mode-vi V set -g @cl_sel 1 \; send -X clear-selection \; send -X select-line
-bind-key -T copy-mode-vi y     set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X copy-pipe-and-cancel "xclip -selection clipboard"
-bind-key -T copy-mode-vi Enter set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X copy-pipe-and-cancel "xclip -selection clipboard"
+bind-key -T copy-mode-vi y     set -g @cl_sel 0 \; send -X copy-pipe-and-cancel "xclip -selection clipboard"
+bind-key -T copy-mode-vi Enter set -g @cl_sel 0 \; send -X copy-pipe-and-cancel "xclip -selection clipboard"
 bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -selection clipboard"
 
 # vim-style zt / zz / zb in copy-mode: scroll the viewport so the cursor's line
@@ -639,12 +638,13 @@ bind-key -T copy-mode-z  b send-keys -X scroll-bottom
 #
 # Side effect worth knowing: while this is on there is a real selection, so `y`
 # yanks the highlighted line. Toggle it off before making a manual `v` selection.
-set -g @cursorline 0
 set -g @cl_sel 0
-# Copy-mode can also be left without q/y/Enter (scrolling back to the bottom,
-# mouse, prefix+]), which left @cursorline stuck at 1 so the next `h` toggled
-# it OFF and showed nothing. Reset both flags on every copy-mode entry/exit.
-set-hook -g pane-mode-changed 'set -g @cursorline 0 ; set -g @cl_sel 0'
+# @cursorline is a sticky preference: only `h` flips it, so it survives leaving
+# copy-mode by any route (q, y, Enter, scrolling back to the bottom, mouse,
+# prefix+]). The highlight itself is a selection and dies with copy-mode, so
+# re-draw it on every entry while the preference is on; on exit just drop the
+# in-progress-selection flag. prefix+Y sets @cl_sel first to opt out.
+set-hook -g pane-mode-changed "if -F '#{!=:#{pane_mode},copy-mode}' 'set -g @cl_sel 0' \"if -F '#{&&:#{@cursorline},#{==:#{@cl_sel},0}}' 'send -X select-line'\""
 
 bind-key -T copy-mode-vi h if -F '#{@cursorline}' \
     'set -g @cursorline 0 ; set -g @cl_sel 0 ; send -X clear-selection' \
@@ -668,18 +668,16 @@ bind-key -T copy-mode-vi L        if -F "$CL" 'send -X bottom-line    ; send -X 
 bind-key -T copy-mode-vi n        if -F "$CL" 'send -X search-again   ; send -X clear-selection ; send -X select-line' 'send -X search-again'
 bind-key -T copy-mode-vi N        if -F "$CL" 'send -X search-reverse ; send -X clear-selection ; send -X select-line' 'send -X search-reverse'
 
-# Leaving copy-mode must not leave @cursorline set, or the next copy-mode
-# session starts with the motion bindings re-anchoring a selection that was
-# never made. Both keep their stock action — q cancels, Escape only clears the
-# selection (in vi mode Escape does NOT exit copy-mode) — and just reset the flag.
-bind-key -T copy-mode-vi q      set -g @cl_sel 0 \; set -g @cursorline 0 \; send -X cancel
+# Both keep their stock action — q cancels, Escape only clears the selection
+# (in vi mode Escape does NOT exit copy-mode) — and leave @cursorline alone.
+bind-key -T copy-mode-vi q      set -g @cl_sel 0 \; send -X cancel
 # Escape aborts a manual selection and hands the line back to the cursorline.
 bind-key -T copy-mode-vi Escape set -g @cl_sel 0 \; if -F '#{@cursorline}' \
     'send -X clear-selection ; send -X select-line' 'send -X clear-selection'
 
 # prefix+Y: enter copy-mode at the last line of output and start line-wise selection.
 # Extend with Up/k/PageUp, finish with y. Designed for quickly grabbing command output.
-bind Y copy-mode \; send-keys -X cursor-up \; send-keys -X select-line
+bind Y set -g @cl_sel 1 \; copy-mode \; send-keys -X clear-selection \; send-keys -X cursor-up \; send-keys -X select-line
 
 # prefix+p pastes the most recent tmux buffer (overrides default `previous-window`).
 # Default `prefix+]` still works too.
