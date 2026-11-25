@@ -466,9 +466,9 @@ set -as terminal-features ',xterm*:extkeys'
 #----------------------------------------------------------------------
 set -g pane-border-lines heavy
 set -g pane-border-style fg=#6e6a86
-set -g pane-active-border-style fg=#9ccfd8
+set -g pane-active-border-style fg=colour51
 set -g pane-border-status top
-set -g pane-border-format '#{?pane_active,#[fg=#9ccfd8],#[fg=#eb6f92]} #{pane_index}: #{@pane_name}#[default]'
+set -g pane-border-format '#{?pane_active,#[fg=colour51],#[fg=#eb6f92]} #{pane_index}: #{@pane_name}#[default]'
 bind T command-prompt -p "Pane name:" 'set-option -p @pane_name "%%"'
 
 # Make zsh my default shell for tmux sessions
