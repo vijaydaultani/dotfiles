@@ -22,6 +22,12 @@ export TMUX_POWERLINE_SEG_WEATHER_UNIT='c'
 export TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER='yrno'
 export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD='600'
 
+# mode_indicator: mouse section off (always on, so it is just noise); the
+# prefix and copy states take yellow and red so they stand out.
+export TMUX_POWERLINE_SEG_MODE_INDICATOR_MOUSE_MODE_ENABLED='false'
+export TMUX_POWERLINE_SEG_MODE_INDICATOR_PREFIX_MODE_TEXT_COLOR='#dbbc7f'  # yellow
+export TMUX_POWERLINE_SEG_MODE_INDICATOR_COPY_MODE_TEXT_COLOR='#e67e80'    # red
+
 # Bar background + default foreground.
 export TMUX_POWERLINE_DEFAULT_BACKGROUND_COLOR='#2d353b'  # bg0
 export TMUX_POWERLINE_DEFAULT_FOREGROUND_COLOR='#d3c6aa'  # fg
@@ -36,6 +42,7 @@ TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
 )
 
 TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
+    "mode_indicator #2d353b #9da9a0"  # bg0 / grey2 — normal|prefix|copy
     "weather  #3d484d #83c092"  # bg2 / aqua — temp for Indore
     "date_day #2d353b #dbbc7f"  # bg0 / yellow
     "date     #3d484d #dbbc7f"  # bg2 / yellow
@@ -63,6 +70,12 @@ export TMUX_POWERLINE_SEG_WEATHER_UNIT='c'
 export TMUX_POWERLINE_SEG_WEATHER_DATA_PROVIDER='yrno'
 export TMUX_POWERLINE_SEG_WEATHER_UPDATE_PERIOD='600'
 
+# mode_indicator: mouse section off (always on, so it is just noise); the
+# prefix and copy states take gold and love so they stand out.
+export TMUX_POWERLINE_SEG_MODE_INDICATOR_MOUSE_MODE_ENABLED='false'
+export TMUX_POWERLINE_SEG_MODE_INDICATOR_PREFIX_MODE_TEXT_COLOR='#f6c177'  # gold
+export TMUX_POWERLINE_SEG_MODE_INDICATOR_COPY_MODE_TEXT_COLOR='#eb6f92'    # love
+
 # Bar background + default foreground.
 export TMUX_POWERLINE_DEFAULT_BACKGROUND_COLOR='#191724'  # base
 export TMUX_POWERLINE_DEFAULT_FOREGROUND_COLOR='#e0def4'  # text
@@ -77,6 +90,7 @@ TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
 )
 
 TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
+    "mode_indicator #191724 #908caa"  # base / subtle — normal|prefix|copy
     "weather  #26233a #9ccfd8"  # overlay / foam — temp for Indore
     "date_day #191724 #f6c177"  # base / gold
     "date     #26233a #f6c177"  # overlay / gold

@@ -158,6 +158,15 @@ set -g @plugin 'vijaydaultani/tmux-easy-motion'
 # fzf-driven menu over tmux objects (sessions, windows, panes, keybindings,
 # clipboard, processes). Activate with prefix + F. Requires fzf (installed).
 set -g @plugin 'sainnhe/tmux-fzf'
+# Fuzzy-pick any word, path, URL or line visible in the pane (prefix + Tab).
+# In the picker, Tab inserts the pick into the shell and Enter copies it.
+set -g @plugin 'laktak/extrakto'
+# Vimium-style hint labels over URLs, paths, git hashes, IPs (prefix + u); type
+# the label to copy that match. prefix + Space is easy-motion's, hence `u`.
+# set-buffer -w also pushes the pick to the system clipboard (set-clipboard on).
+set -g @plugin 'fcsonline/tmux-thumbs'
+set -g @thumbs-key u
+set -g @thumbs-command 'tmux set-buffer -w -- {} && tmux display-message "Copied {}"'
 
 #----------------------------------------------------------------------
 # Plugins settings
@@ -457,9 +466,9 @@ set -as terminal-features ',xterm*:extkeys'
 #----------------------------------------------------------------------
 set -g pane-border-lines heavy
 set -g pane-border-style fg=#6e6a86
-set -g pane-active-border-style fg=colour51
+set -g pane-active-border-style fg=#9ccfd8
 set -g pane-border-status top
-set -g pane-border-format '#{?pane_active,#[fg=colour51],#[fg=#eb6f92]} #{pane_index}: #{@pane_name}#[default]'
+set -g pane-border-format '#{?pane_active,#[fg=#9ccfd8],#[fg=#eb6f92]} #{pane_index}: #{@pane_name}#[default]'
 bind T command-prompt -p "Pane name:" 'set-option -p @pane_name "%%"'
 
 # Make zsh my default shell for tmux sessions
@@ -524,6 +533,15 @@ set -g @plugin 'vijaydaultani/tmux-easy-motion'
 # fzf-driven menu over tmux objects (sessions, windows, panes, keybindings,
 # clipboard, processes). Activate with prefix + F. Requires fzf (installed).
 set -g @plugin 'sainnhe/tmux-fzf'
+# Fuzzy-pick any word, path, URL or line visible in the pane (prefix + Tab).
+# In the picker, Tab inserts the pick into the shell and Enter copies it.
+set -g @plugin 'laktak/extrakto'
+# Vimium-style hint labels over URLs, paths, git hashes, IPs (prefix + u); type
+# the label to copy that match. prefix + Space is easy-motion's, hence `u`.
+# set-buffer -w also pushes the pick to the system clipboard (set-clipboard on).
+set -g @plugin 'fcsonline/tmux-thumbs'
+set -g @thumbs-key u
+set -g @thumbs-command 'tmux set-buffer -w -- {} && tmux display-message "Copied {}"'
 
 #----------------------------------------------------------------------
 # Plugins settings
@@ -720,16 +738,14 @@ set-option -g message-command-style "bg=#26233a,fg=#e0def4"
 # Also the copy-mode cursorline highlight (see the `h` toggle above) — tmux has
 # a single mode-style, so the cursorline and a normal `v` selection necessarily
 # share it.
-# This magenta is mid-tone, so it is the tightest of the colours tried here:
-# white clears the 4.5:1 readability threshold only just, at 4.55:1 (black is a
-# hair better at 4.62:1, the palette's #e0def4 fails outright at 3.45:1). Fine
-# for a highlight bar, but do not darken the foreground expecting an improvement.
+# Rosé Pine love is light enough that the text must be dark: the palette's base
+# #191724 reads at 6.07:1, while white fails at 2.91:1.
 # Rendered exactly wherever the client advertises the RGB terminal feature (it
 # does here); a client without RGB falls back to colour168 / #d75f87, which stays
-# recognisably magenta. Check `#{client_termfeatures}` on a new terminal.
+# recognisably pink. Check `#{client_termfeatures}` on a new terminal.
 # Keep the hex LOWERCASE: tmux 3.6+ draws the selection via
 # copy-mode-selection-style = "#{E:mode-style}", which format-expands this value,
 # and an uppercase `#F` is the window-flags alias — "fg=#FFFFFF" became
 # "fg=*FFFFF", an invalid style, so no selection or cursorline was drawn at all.
-set-window-option -g mode-style     "bg=#d33682,fg=#ffffff"
+set-window-option -g mode-style     "bg=#eb6f92,fg=#191724"
 {{- end }}
